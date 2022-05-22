@@ -18,14 +18,29 @@ namespace PassLock.Manager.Utils
          EncryptedPasswords = new List<Password>();
       }
 
-      public string Serialize()
+      public bool Add(string key, string salt, Hash hashingMethod, object value)
+      {
+
+      }
+
+      public bool Load()
+      {
+
+      }
+
+      public bool Save()
+      {
+
+      }
+
+      private string Serialize()
       {
          string serializedPasswordList = JsonConvert.SerializeObject(EncryptedPasswords);
 
          return serializedPasswordList;
       }
 
-      public Password Deserialize(string encryptedPassword)
+      private Password Deserialize(string encryptedPassword)
       {
          return new Password() { Title = "Empty", Encrypted = string.Empty, Salt = string.Empty, HashType = Hash.SHA256 };
       }
