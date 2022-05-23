@@ -49,7 +49,7 @@ namespace PassLock.Manager.Utils
                 Title = key,
                 Salt = salt,
                 HashType = hashingMethod,
-                Encrypted = value
+                Encrypted = hashValue
              };
 
             EncryptedPasswords.Add(newPassword);
@@ -65,24 +65,30 @@ namespace PassLock.Manager.Utils
       /// </summary>
       public bool Load()
       {
+         var content = FileManager.GetFileContent();
+
+         EncryptedPasswords = JsonConvert.Deserialize(content);
+
          return false;
       }
 
       public bool Save()
       {
-         return false;
+         Console.WriteLine(Serialize());
+
+         FileManager.SaveContentToFile(Serialize());
+
+         return true;
       }
 
       private string Serialize()
       {
-         string serializedPasswordList = JsonConvert.SerializeObject(EncryptedPasswords);
-
-         return serializedPasswordList;
+         return JsonConvert.SerializeObject(EncryptedPasswords);
       }
 
       private Password Deserialize(string encryptedPassword)
       {
-         return new Password() { Title = "Empty", Encrypted = string.Empty, Salt = string.Empty, HashType = Hash.SHA256 };
+         return new Password();
       }
    }
 }
