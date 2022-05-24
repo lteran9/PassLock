@@ -13,38 +13,47 @@ namespace Manager
       // Run the program
       static async Task Main(string[] args)
       {
-         // If no arguments provided
-         if (args.Length <= 0)
+         try
          {
-            DisplayUsageInformation();
-         }
-         else
-         {
-            string argument = args[0].ToLower();
-
             // Find passwords.json file and load all passwords into memory
             await encryptionManager.Load();
 
-            switch (argument)
+            switch (args[0].ToLower())
             {
                case "add":
                   Console.WriteLine("Please type in your password.");
                   var securePassword = GetPassword();
                   Console.WriteLine(string.Empty);
 
-                  encryptionManager.Add(args[1], args[2], Hash.SHA256, securePassword.ToString());
+                  // Get the value of the secure string for encryption
+                  string password = new System.Net.NetworkCredential(string.Empty, securePassword).Password;
+
+                  encryptionManager.Add(args[1], args[2], Hash.SHA256, password);
                   encryptionManager.Save();
 
                   break;
                case "delete":
-               case "update":
+                  var key = args[1];
+
+                  encryptionManager.Remove(key);
+                  encryptionManager.Save();
+
+                  break;
                case "list":
                   break;
                default:
                   DisplayUsageInformation();
                   break;
             }
+
+            return;
          }
+         catch (Exception ex)
+         {
+            Console.WriteLine(ex.Message);
+         }
+
+         DisplayUsageInformation();
       }
 
       static void DisplayUsageInformation()
@@ -56,7 +65,7 @@ namespace Manager
          Console.WriteLine("Options:");
          Console.WriteLine("-h|--help\tDisplay help.");
          Console.WriteLine("--add <title> <salt>\t\t");
-         Console.WriteLine("--info\t\tDisplay PassLock information help.");
+         Console.WriteLine("--info\t\t\tDisplay PassLock information help.");
          Console.WriteLine("--version\tDisplay PassLock version number.");
       }
 

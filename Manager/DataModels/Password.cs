@@ -2,7 +2,7 @@ using System;
 
 namespace PassLock.Manager.DataModels
 {
-   public struct Password
+   public class Password
    {
       public string Title { get; set; }
       public string Salt { get; set; }

@@ -6,7 +6,7 @@ namespace PassLock.Manager.Utils
 {
    public class FileManager
    {
-      static readonly string FilePath = "Encrypted/passwords.json";
+      static readonly string FilePath = "Manager/Encrypted/passwords.json";
 
       public static async Task<string> GetFileContent()
       {
