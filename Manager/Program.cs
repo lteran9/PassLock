@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Security;
+using System.Threading.Tasks;
 using PassLock.Manager.Utils;
 using PassLock.Manager.DataModels;
 
@@ -10,7 +11,7 @@ namespace Manager
       static EncryptionManager encryptionManager = new EncryptionManager();
 
       // Run the program
-      static void Main(string[] args)
+      static async Task Main(string[] args)
       {
          // If no arguments provided
          if (args.Length <= 0)
@@ -20,6 +21,9 @@ namespace Manager
          else
          {
             string argument = args[0].ToLower();
+
+            // Find passwords.json file and load all passwords into memory
+            await encryptionManager.Load();
 
             switch (argument)
             {

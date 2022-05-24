@@ -1,24 +1,21 @@
+using Newtonsoft.Json;
+using PassLock.Manager.DataModels;
 using System;
 using System.Collections.Generic;
-using PassLock.Manager.DataModels;
 using System.Security.Cryptography;
 using System.Text;
-using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace PassLock.Manager.Utils
 {
    public class EncryptionManager
    {
-      public List<Password> EncryptedPasswords { get; set; }
+      public List<Password> EncryptedPasswords { get; set; } = new List<Password>();
 
       /// <summary>
       /// Encryption manager class that handles all of the encryption and serialization for passwords.
       /// </summary>
-      public EncryptionManager()
-      {
-         // Find passwords.json file and load all passwords into memory
-         EncryptedPasswords = new List<Password>();
-      }
+      public EncryptionManager() { }
 
       /// <summary>
       /// This method will add a password to the list.
@@ -43,14 +40,16 @@ namespace PassLock.Manager.Utils
                hashValue = Algorithm.sha512.ComputeHash(Encoding.UTF8.GetBytes(value));
             }
 
+            // Check that the key does not exist in the list.
+
             newPassword =
-             new Password()
-             {
-                Title = key,
-                Salt = salt,
-                HashType = hashingMethod,
-                Encrypted = hashValue
-             };
+               new Password()
+               {
+                  Title = key,
+                  Salt = salt,
+                  HashType = hashingMethod,
+                  Encrypted = hashValue
+               };
 
             EncryptedPasswords.Add(newPassword);
 
@@ -63,11 +62,11 @@ namespace PassLock.Manager.Utils
       /// <summary>
       /// Loads the encrypted passwords found in the encryption file.
       /// </summary>
-      public bool Load()
+      public async Task<bool> Load()
       {
-         var content = FileManager.GetFileContent();
+         var content = await FileManager.GetFileContent();
 
-         EncryptedPasswords = JsonConvert.Deserialize(content);
+         EncryptedPasswords = JsonConvert.DeserializeObject<List<Password>>(content);
 
          return false;
       }
