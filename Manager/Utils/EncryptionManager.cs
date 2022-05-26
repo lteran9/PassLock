@@ -24,21 +24,21 @@ namespace PassLock.Manager.Utils
       /// <summary>
       /// This method will add a password to the list.
       /// </summary>
-      public bool Add(string key, string salt, Hash hashingMethod, string value)
+      public bool Add(string key, string salt, Algorithm.Hash hashingMethod, string value)
       {
          if (!string.IsNullOrEmpty(key) || !string.IsNullOrEmpty(salt) || !string.IsNullOrEmpty(value))
          {
             byte[] hashValue = new byte[0];
 
-            if (hashingMethod == Hash.MD5)
+            if (hashingMethod == Algorithm.Hash.MD5)
             {
                hashValue = Algorithm.md5.ComputeHash(Encoding.UTF8.GetBytes(value));
             }
-            else if (hashingMethod == Hash.SHA256)
+            else if (hashingMethod == Algorithm.Hash.SHA256)
             {
                hashValue = Algorithm.sha256.ComputeHash(Encoding.UTF8.GetBytes(value));
             }
-            else if (hashingMethod == Hash.SHA512)
+            else if (hashingMethod == Algorithm.Hash.SHA512)
             {
                hashValue = Algorithm.sha512.ComputeHash(Encoding.UTF8.GetBytes(value));
             }

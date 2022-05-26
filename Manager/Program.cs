@@ -28,7 +28,7 @@ namespace Manager
                   // Get the value of the secure string for encryption
                   string password = new System.Net.NetworkCredential(string.Empty, securePassword).Password;
 
-                  encryptionManager.Add(args[1], args[2], Hash.SHA256, password);
+                  encryptionManager.Add(args[1], args[2], Algorithm.Hash.SHA256, password);
                   encryptionManager.Save();
 
                   break;

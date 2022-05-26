@@ -1,4 +1,5 @@
 using System;
+using PassLock.Manager.Utils;
 
 namespace PassLock.Manager.DataModels
 {
@@ -9,6 +10,6 @@ namespace PassLock.Manager.DataModels
 
       public byte[] Encrypted { get; set; }
 
-      public Hash HashType { get; set; }
+      public Algorithm.Hash HashType { get; set; }
    }
 }
