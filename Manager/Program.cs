@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Security;
 using System.Threading.Tasks;
 using PassLock.Manager.Utils;
@@ -40,6 +41,14 @@ namespace Manager
 
                   break;
                case "list":
+                  var sb = new StringBuilder();
+                  foreach (var entry in encryptionManager.EncryptedPasswords)
+                  {
+                     sb.Append("\nKey:\t" + entry.Title);
+                  }
+
+                  Console.WriteLine(sb.ToString());
+
                   break;
                default:
                   DisplayUsageInformation();
