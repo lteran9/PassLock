@@ -149,13 +149,23 @@ namespace PassLock.Manager.Utils
          }
          else
          {
-            for (int i = 0; i < 32; i++)
+            if (key.Length < 32)
             {
-               if (key.Length < i)
-               {
+               var paddedKey = new string(key);
+               var newGuid = Guid.NewGuid().ToString().Replace("-", "");
 
+               for (int i = 0; i < 32; i++)
+               {
+                  if (i >= paddedKey.Length)
+                  {
+                     paddedKey += newGuid[i];
+                  }
                }
+
+               return paddedKey;
             }
+
+            return key;
          }
       }
 
