@@ -6,10 +6,9 @@ namespace PassLock.Manager.DataModels
    public class Password
    {
       public string Title { get; set; }
-      public string Salt { get; set; }
 
-      public byte[] Encrypted { get; set; }
-
-      public Algorithm.Hash HashType { get; set; }
+      public byte[] Key { get; set; }
+      public byte[] IV { get; set; }
+      public byte[] Cipher { get; set; }
    }
 }

@@ -29,7 +29,7 @@ namespace Manager
                   // Get the value of the secure string for encryption
                   string password = new System.Net.NetworkCredential(string.Empty, securePassword).Password;
 
-                  encryptionManager.Add(args[1], args[2], Algorithm.Hash.SHA256, password);
+                  encryptionManager.Add(args[1], args[2], password);
                   encryptionManager.Save();
 
                   break;
@@ -42,9 +42,18 @@ namespace Manager
                   break;
                case "list":
                   var sb = new StringBuilder();
-                  foreach (var entry in encryptionManager.EncryptedPasswords)
+
+                  if (encryptionManager.EncryptedPasswords.Count > 0)
                   {
-                     sb.Append("\nKey:\t" + entry.Title);
+
+                     foreach (var entry in encryptionManager.EncryptedPasswords)
+                     {
+                        sb.Append("\nKey:\t" + entry.Title);
+                     }
+                  }
+                  else
+                  {
+                     sb.Append("No passwords to display.");
                   }
 
                   Console.WriteLine(sb.ToString());
@@ -73,7 +82,7 @@ namespace Manager
          Console.WriteLine("");
          Console.WriteLine("Options:");
          Console.WriteLine("-h|--help\tDisplay help.");
-         Console.WriteLine("--add <title> <salt>\t\t");
+         Console.WriteLine("--add <title> <key>\t\t");
          Console.WriteLine("--info\t\t\tDisplay PassLock information help.");
          Console.WriteLine("--version\tDisplay PassLock version number.");
       }

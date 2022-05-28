@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using PassLock.Manager.DataModels;
 using System;
+using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using System.Security.Cryptography;
@@ -24,35 +25,25 @@ namespace PassLock.Manager.Utils
       /// <summary>
       /// This method will add a password to the list.
       /// </summary>
-      public bool Add(string key, string salt, Algorithm.Hash hashingMethod, string value)
+      public bool Add(string title, string key, string value)
       {
-         if (!string.IsNullOrEmpty(key) || !string.IsNullOrEmpty(salt) || !string.IsNullOrEmpty(value))
+         if (!string.IsNullOrEmpty(title) || !string.IsNullOrEmpty(key) || !string.IsNullOrEmpty(value))
          {
-            byte[] hashValue = new byte[0];
-
-            if (hashingMethod == Algorithm.Hash.MD5)
-            {
-               hashValue = Algorithm.md5.ComputeHash(Encoding.UTF8.GetBytes(value));
-            }
-            else if (hashingMethod == Algorithm.Hash.SHA256)
-            {
-               hashValue = Algorithm.sha256.ComputeHash(Encoding.UTF8.GetBytes(value));
-            }
-            else if (hashingMethod == Algorithm.Hash.SHA512)
-            {
-               hashValue = Algorithm.sha512.ComputeHash(Encoding.UTF8.GetBytes(value));
-            }
+            // Get key as a byte array
+            byte[] byteKey = Encoding.UTF8.GetBytes(PadKey(key));
+            // Generate randomly for each password
+            byte[] byteIV = Encoding.UTF8.GetBytes(Guid.NewGuid().ToString().Replace("-", ""));
 
             // Check that the key does not exist in the list.
-            if (!DoesKeyExist(key))
+            if (!DoesEntryExist(title))
             {
                EncryptedPasswords.Add(
                   new Password()
                   {
-                     Title = key,
-                     Salt = salt,
-                     HashType = hashingMethod,
-                     Encrypted = hashValue
+                     Title = title,
+                     Key = byteKey,
+                     IV = byteIV,
+                     Cipher = Encrypt(value, byteKey, byteIV)
                   });
             }
             else
@@ -60,11 +51,11 @@ namespace PassLock.Manager.Utils
                // Overwrite existing password
                foreach (var password in EncryptedPasswords)
                {
-                  if (password.Title.ToLower() == key.ToLower())
+                  if (password.Title.ToLower() == title.ToLower())
                   {
-                     password.Salt = salt;
-                     password.HashType = hashingMethod;
-                     password.Encrypted = hashValue;
+                     password.Key = byteKey;
+                     password.IV = byteIV;
+                     password.Cipher = Encrypt(value, byteKey, byteIV);
                   }
                }
             }
@@ -134,17 +125,100 @@ namespace PassLock.Manager.Utils
          return JsonConvert.DeserializeObject<List<Password>>(json) ?? new List<Password>();
       }
 
-      private bool DoesKeyExist(string key)
+      private bool DoesEntryExist(string title)
       {
          foreach (var password in EncryptedPasswords)
          {
-            if (password.Title.ToLower() == key.ToLower())
+            if (password.Title.ToLower() == title.ToLower())
             {
                return true;
             }
          }
 
          return false;
+      }
+
+      /// <summary>
+      /// This method will return a string of length 32 regardless of input.
+      /// <summary>
+      static string PadKey(string key)
+      {
+         if (string.IsNullOrEmpty(key))
+         {
+            return Guid.NewGuid().ToString().Replace("-", "");
+         }
+         else
+         {
+            for (int i = 0; i < 32; i++)
+            {
+               if (key.Length < i)
+               {
+
+               }
+            }
+         }
+      }
+
+      static byte[] Encrypt(string plainText, byte[] key, byte[] iv)
+      {
+         if (string.IsNullOrEmpty(plainText))
+            throw new ArgumentException("String must not be null or empty.");
+         if (key == null)
+            throw new ArgumentNullException("key");
+         if (iv == null)
+            throw new ArgumentNullException("iv");
+
+         Algorithm.aes.Key = key;
+         Algorithm.aes.IV = iv;
+
+         byte[] encrypted = null;
+
+         ICryptoTransform encryptor = Algorithm.aes.CreateEncryptor(Algorithm.aes.Key, Algorithm.aes.IV);
+
+         using (var msEncrypt = new MemoryStream())
+         {
+            using (var csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
+            {
+               using (var swEncrypt = new StreamWriter(csEncrypt))
+               {
+                  // Write all data to the stream
+                  swEncrypt.Write(plainText);
+               }
+               encrypted = msEncrypt.ToArray();
+            }
+         }
+
+         return encrypted;
+      }
+
+      static string Descrypt(byte[] cipherText, byte[] key, byte[] iv)
+      {
+         if (cipherText == null || cipherText.Length <= 0)
+            throw new ArgumentException("cipherText must not be null or empty.");
+         if (key == null || key.Length <= 0)
+            throw new ArgumentException("key must not be null or empty.");
+         if (iv == null || iv.Length <= 0)
+            throw new ArgumentException("iv must not be null or empty.");
+
+         Algorithm.aes.Key = key;
+         Algorithm.aes.IV = iv;
+
+         string plainText = null;
+
+         ICryptoTransform decryptor = Algorithm.aes.CreateDecryptor(Algorithm.aes.Key, Algorithm.aes.IV);
+
+         using (var msDecrypt = new MemoryStream(cipherText))
+         {
+            using (var csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
+            {
+               using (var srDecrypt = new StreamReader(csDecrypt))
+               {
+                  plainText = srDecrypt.ReadToEnd();
+               }
+            }
+         }
+
+         return plainText;
       }
    }
 }
