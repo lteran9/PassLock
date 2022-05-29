@@ -30,9 +30,9 @@ namespace PassLock.Manager.Utils
          if (!string.IsNullOrEmpty(title) || !string.IsNullOrEmpty(key) || !string.IsNullOrEmpty(value))
          {
             // Get key as a byte array
-            byte[] byteKey = Encoding.UTF8.GetBytes(PadKey(key));
-            // Generate randomly for each password
-            byte[] byteIV = Encoding.UTF8.GetBytes(Guid.NewGuid().ToString().Replace("-", ""));
+            byte[] byteKey = Encoding.UTF8.GetBytes(GenerateKey(key));
+            // Generate randomly for each password must be 16 bytes (128 bits)
+            byte[] byteIV = Encoding.UTF8.GetBytes(Guid.NewGuid().ToString().Replace("-", "").Substring(0, 16));
 
             // Check that the key does not exist in the list.
             if (!DoesEntryExist(title))
@@ -64,6 +64,25 @@ namespace PassLock.Manager.Utils
          }
 
          return false;
+      }
+
+      /// <summary>
+      /// Returns the decrypted password as plain text.
+      /// </summary>
+      public string Get(string title)
+      {
+         if (!string.IsNullOrEmpty(title))
+         {
+            foreach (var password in EncryptedPasswords)
+            {
+               if (password.Title.ToLower() == title.ToLower())
+               {
+                  return Decrypt(password.Cipher, password.Key, password.IV);
+               }
+            }
+         }
+
+         return string.Empty;
       }
 
       /// <summary>
@@ -106,9 +125,12 @@ namespace PassLock.Manager.Utils
          return false;
       }
 
+      /// <summary>
+      /// Writes the encrypted passwords to the encryption file.
+      /// </summary>
       public bool Save()
       {
-         Console.WriteLine(Serialize());
+         Console.WriteLine("\nEncrypted passwords saved to file.");
 
          FileManager.SaveContentToFile(Serialize());
 
@@ -206,7 +228,7 @@ namespace PassLock.Manager.Utils
          return encrypted;
       }
 
-      static string Descrypt(byte[] cipherText, byte[] key, byte[] iv)
+      static string Decrypt(byte[] cipherText, byte[] key, byte[] iv)
       {
          if (cipherText == null || cipherText.Length <= 0)
             throw new ArgumentException("cipherText must not be null or empty.");

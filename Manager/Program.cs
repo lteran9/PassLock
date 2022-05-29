@@ -14,6 +14,8 @@ namespace Manager
       // Run the program
       static async Task Main(string[] args)
       {
+         bool displayUsageInformation = true;
+
          try
          {
             // Find passwords.json file and load all passwords into memory
@@ -34,9 +36,8 @@ namespace Manager
 
                   break;
                case "delete":
-                  var key = args[1];
 
-                  encryptionManager.Remove(key);
+                  encryptionManager.Remove(args[1]);
                   encryptionManager.Save();
 
                   break;
@@ -59,19 +60,36 @@ namespace Manager
                   Console.WriteLine(sb.ToString());
 
                   break;
+               case "decrypt":
+
+                  var plainTextPassword = encryptionManager.Get(args[1]);
+                  if (!string.IsNullOrEmpty(plainTextPassword))
+                  {
+                     Console.WriteLine(plainTextPassword);
+                  }
+                  else
+                  {
+                     Console.WriteLine("\nCould not find password in encrypted passwords file.");
+                  }
+
+                  break;
                default:
                   DisplayUsageInformation();
                   break;
             }
 
-            return;
+            displayUsageInformation = false;
          }
          catch (Exception ex)
          {
             Console.WriteLine(ex.Message);
+            displayUsageInformation = false;
          }
 
-         DisplayUsageInformation();
+         if (displayUsageInformation)
+         {
+            DisplayUsageInformation();
+         }
       }
 
       static void DisplayUsageInformation()
