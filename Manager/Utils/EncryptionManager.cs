@@ -115,6 +115,11 @@ namespace PassLock.Manager.Utils
          return true;
       }
 
+      public string GenerateKey(string input = null)
+      {
+         return PadKey(input);
+      }
+
       private string Serialize()
       {
          return JsonConvert.SerializeObject(EncryptedPasswords);
@@ -156,15 +161,15 @@ namespace PassLock.Manager.Utils
 
                for (int i = 0; i < 32; i++)
                {
-                  if (i >= paddedKey.Length)
+                  if (i >= key.Length)
                   {
                      paddedKey += newGuid[i];
                   }
                }
-
+               // Return padded key
                return paddedKey;
             }
-
+            // Return unmodified key
             return key;
          }
       }
