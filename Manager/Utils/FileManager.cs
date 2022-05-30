@@ -6,7 +6,7 @@ namespace PassLock.Manager.Utils
 {
    public class FileManager
    {
-      static readonly string FilePath = "Encrypted/passwords.json";
+      static readonly string FilePath = "Manager/Encrypted/passwords.json";
 
       public static async Task<string> GetFileContent()
       {
@@ -34,6 +34,9 @@ namespace PassLock.Manager.Utils
          {
             using (var stream = new FileStream(FilePath, FileMode.OpenOrCreate))
             {
+               // Discard file content and overwrite with in-memory content
+               stream.SetLength(0);
+
                using (var writer = new StreamWriter(stream))
                {
                   await writer.WriteAsync(content);

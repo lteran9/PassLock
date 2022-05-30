@@ -37,27 +37,19 @@ namespace Manager
                   break;
                case "delete":
 
-                  encryptionManager.Remove(args[1]);
-                  encryptionManager.Save();
-
-                  break;
-               case "list":
-                  var sb = new StringBuilder();
-
-                  if (encryptionManager.EncryptedPasswords.Count > 0)
+                  if (encryptionManager.Remove(args[1]))
                   {
-
-                     foreach (var entry in encryptionManager.EncryptedPasswords)
-                     {
-                        sb.Append("\nKey:\t" + entry.Title);
-                     }
+                     encryptionManager.Save();
                   }
                   else
                   {
-                     sb.Append("No passwords to display.");
+                     Console.WriteLine("Unable to remove entry from encrypted passwords list.");
                   }
 
-                  Console.WriteLine(sb.ToString());
+                  break;
+               case "list":
+
+                  Console.WriteLine(encryptionManager.List());
 
                   break;
                case "decrypt":

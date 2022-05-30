@@ -12,7 +12,7 @@ namespace PassLock.Manager.Utils
 {
    public class EncryptionManager
    {
-      public List<Password> EncryptedPasswords { get; set; }
+      private List<Password> EncryptedPasswords { get; set; }
 
       /// <summary>
       /// Encryption manager class that handles all of the encryption and serialization for passwords.
@@ -34,7 +34,7 @@ namespace PassLock.Manager.Utils
             // Generate randomly for each password must be 16 bytes (128 bits)
             byte[] byteIV = Encoding.UTF8.GetBytes(Guid.NewGuid().ToString().Replace("-", "").Substring(0, 16));
 
-            // Check that the key does not exist in the list.
+            // Check that the key does not exist in the list
             if (!DoesEntryExist(title))
             {
                EncryptedPasswords.Add(
@@ -71,7 +71,7 @@ namespace PassLock.Manager.Utils
       /// </summary>
       public string Get(string title)
       {
-         if (!string.IsNullOrEmpty(title))
+         if (DoesEntryExist(title))
          {
             foreach (var password in EncryptedPasswords)
             {
@@ -113,6 +113,25 @@ namespace PassLock.Manager.Utils
          return false;
       }
 
+      public string List()
+      {
+         var sb = new StringBuilder();
+
+         if (EncryptedPasswords.Count > 0)
+         {
+            foreach (var entry in EncryptedPasswords)
+            {
+               sb.Append("\nKey:\t" + entry.Title);
+            }
+         }
+         else
+         {
+            sb.Append("No passwords to display.");
+         }
+
+         return sb.ToString();
+      }
+
       /// <summary>
       /// Loads the encrypted passwords found in the encryption file.
       /// </summary>
@@ -130,9 +149,9 @@ namespace PassLock.Manager.Utils
       /// </summary>
       public bool Save()
       {
-         Console.WriteLine("\nEncrypted passwords saved to file.");
-
          FileManager.SaveContentToFile(Serialize());
+
+         Console.WriteLine("\nEncrypted passwords saved to file.");
 
          return true;
       }
@@ -152,13 +171,19 @@ namespace PassLock.Manager.Utils
          return JsonConvert.DeserializeObject<List<Password>>(json) ?? new List<Password>();
       }
 
+      /// <summary>
+      /// Checks the encrypted passwords list in memory and determines if the title exists.
+      /// <summary>
       private bool DoesEntryExist(string title)
       {
-         foreach (var password in EncryptedPasswords)
+         if (!string.IsNullOrEmpty(title))
          {
-            if (password.Title.ToLower() == title.ToLower())
+            foreach (var password in EncryptedPasswords)
             {
-               return true;
+               if (password.Title.ToLower() == title.ToLower())
+               {
+                  return true;
+               }
             }
          }
 
@@ -168,7 +193,7 @@ namespace PassLock.Manager.Utils
       /// <summary>
       /// This method will return a string of length 32 regardless of input.
       /// <summary>
-      static string PadKey(string key)
+      string PadKey(string key)
       {
          if (string.IsNullOrEmpty(key))
          {

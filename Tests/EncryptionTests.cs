@@ -7,11 +7,11 @@ namespace Tests
 {
    public class EncryptionTests
    {
+      static EncryptionManager encryptionManager = new EncryptionManager();
+
       [Fact]
       public void Test_KeyPadding()
       {
-         var encryptionManager = new EncryptionManager();
-
          // Key length 0
          var sampleKey1 = "";
          var paddedSampleKey1 = encryptionManager.GenerateKey(sampleKey1);
@@ -31,6 +31,18 @@ namespace Tests
          Assert.NotEqual(sampleKey2, paddedSampleKey2);
          // Key length is already 32 characters so no need to modify string
          Assert.Equal(sampleKey3, paddedSampleKey3);
+      }
+
+      [Fact]
+      public void Test_Encryption()
+      {
+
+      }
+
+      [Fact]
+      public void Test_Decryption()
+      {
+
       }
    }
 }
