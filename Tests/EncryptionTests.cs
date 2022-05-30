@@ -39,12 +39,14 @@ namespace Tests
          var key = Guid.NewGuid().ToString().Replace("-", "");
          var iv = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 16);
 
-         var encryptedPassword = Encrypt(password, Encoding.UTF8.GetBytes(key), Encoding.UTF8.GetBytes(iv));
+         var encryptedPasswordCipher = Encrypt(password, Encoding.UTF8.GetBytes(key), Encoding.UTF8.GetBytes(iv));
 
-         Assert.True(encryptedPassword != Encoding.UTF8.GetBytes(password));
+         Assert.True(encryptedPasswordCipher != Encoding.UTF8.GetBytes(password));
+         Assert.True(encryptedPasswordCipher is byte[]);
       }
 
       [Fact]
+
       public void Test_Decryption()
       {
          var password = "s6@nLL49";
@@ -52,9 +54,17 @@ namespace Tests
          var iv = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 16);
 
          var encryptedPassword = Encrypt(password, Encoding.UTF8.GetBytes(key), Encoding.UTF8.GetBytes(iv));
+         // Need to use the same key and iv to decrypt
          var decryptedPassword = Decrypt(encryptedPassword, Encoding.UTF8.GetBytes(key), Encoding.UTF8.GetBytes(iv));
 
          Assert.True(decryptedPassword == password);
+         Assert.True(decryptedPassword is string);
+
+         key = Guid.NewGuid().ToString().Replace("-", "");
+         iv = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 16);
+
+         // Using a different key and iv should not yield the correct password
+         Assert.Throws<System.Security.Cryptography.CryptographicException>(() => Decrypt(encryptedPassword, Encoding.UTF8.GetBytes(key), Encoding.UTF8.GetBytes(iv)));
       }
    }
 }
