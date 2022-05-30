@@ -221,7 +221,7 @@ namespace PassLock.Manager.Utils
          }
       }
 
-      static byte[] Encrypt(string plainText, byte[] key, byte[] iv)
+      protected static byte[] Encrypt(string plainText, byte[] key, byte[] iv)
       {
          if (string.IsNullOrEmpty(plainText))
             throw new ArgumentException("String must not be null or empty.");
@@ -253,7 +253,7 @@ namespace PassLock.Manager.Utils
          return encrypted;
       }
 
-      static string Decrypt(byte[] cipherText, byte[] key, byte[] iv)
+      protected static string Decrypt(byte[] cipherText, byte[] key, byte[] iv)
       {
          if (cipherText == null || cipherText.Length <= 0)
             throw new ArgumentException("cipherText must not be null or empty.");
