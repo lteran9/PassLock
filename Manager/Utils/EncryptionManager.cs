@@ -193,7 +193,7 @@ namespace PassLock.Manager.Utils
       /// <summary>
       /// This method will return a string of length 32 regardless of input.
       /// <summary>
-      string PadKey(string key)
+      private string PadKey(string key)
       {
          if (string.IsNullOrEmpty(key))
          {
