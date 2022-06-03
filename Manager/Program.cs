@@ -75,7 +75,6 @@ namespace Manager
          catch (Exception ex)
          {
             Console.WriteLine(ex.Message);
-            displayUsageInformation = false;
          }
 
          if (displayUsageInformation)
@@ -86,15 +85,20 @@ namespace Manager
 
       static void DisplayUsageInformation()
       {
-         Console.WriteLine("");
-         Console.WriteLine("Usage: passlock [options]");
-         Console.WriteLine("Usage: passlock [command]");
-         Console.WriteLine("");
-         Console.WriteLine("Options:");
-         Console.WriteLine("-h|--help\tDisplay help.");
-         Console.WriteLine("--add <title> <key>\t\t");
-         Console.WriteLine("--info\t\t\tDisplay PassLock information help.");
-         Console.WriteLine("--version\tDisplay PassLock version number.");
+         var sb = new StringBuilder();
+         sb.Append("\n");
+         sb.Append("Usage: passlock [options]\n");
+         sb.Append("Usage: passlock [command]\n\n");
+
+         sb.Append("Options:\n");
+         sb.Append("-h|--help\t\tDisplay help.\n");
+         sb.Append("--add <title> <key>\tAdd a password to the encrypted passwords list.\n");
+         sb.Append("--delete <title>\tDeletes the password that matches the given title.\n");
+         sb.Append("--decrypt <title>\tDisplays the matching password in plain text.\n");
+         sb.Append("--info\t\t\tDisplay PassLock information help.\n");
+         sb.Append("--version\t\tDisplay PassLock version number.");
+
+         Console.Write(sb.ToString());
       }
 
       static SecureString GetPassword()
