@@ -101,6 +101,7 @@ namespace Manager
          Console.Write(sb.ToString());
       }
 
+      // Use this method to securely get the password
       static SecureString GetPassword()
       {
          var pwd = new SecureString();
