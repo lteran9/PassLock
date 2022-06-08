@@ -31,7 +31,7 @@ namespace Manager
                   // Get the value of the secure string for encryption
                   string password = new System.Net.NetworkCredential(string.Empty, securePassword).Password;
 
-                  encryptionManager.Add(args[1], args[2], password);
+                  encryptionManager.Add(args[1], password);
                   encryptionManager.Save();
 
                   break;
@@ -92,7 +92,7 @@ namespace Manager
 
          sb.Append("Options:\n");
          sb.Append("-h|--help\t\tDisplay help.\n");
-         sb.Append("--add <title> <key>\tAdd a password to the encrypted passwords list.\n");
+         sb.Append("--add <title>\tAdd a password to the encrypted passwords list.\n");
          sb.Append("--delete <title>\tDeletes the password that matches the given title.\n");
          sb.Append("--decrypt <title>\tDisplays the matching password in plain text.\n");
          sb.Append("--info\t\t\tDisplay PassLock information help.\n");

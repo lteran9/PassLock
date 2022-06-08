@@ -25,12 +25,12 @@ namespace PassLock.Manager.Utils
       /// <summary>
       /// This method will add a password to the list.
       /// </summary>
-      public bool Add(string title, string key, string value)
+      public bool Add(string title, string value)
       {
-         if (!string.IsNullOrEmpty(title) || !string.IsNullOrEmpty(key) || !string.IsNullOrEmpty(value))
+         if (!string.IsNullOrEmpty(title) || !string.IsNullOrEmpty(value))
          {
             // Get key as a byte array
-            byte[] byteKey = Encoding.UTF8.GetBytes(GenerateKey(key));
+            byte[] byteKey = Encoding.UTF8.GetBytes(GenerateKey());
             // Generate randomly for each password must be 16 bytes (128 bits)
             byte[] byteIV = Encoding.UTF8.GetBytes(Guid.NewGuid().ToString().Replace("-", "").Substring(0, 16));
 
