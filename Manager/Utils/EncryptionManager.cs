@@ -113,6 +113,9 @@ namespace PassLock.Manager.Utils
          return false;
       }
 
+      /// <summary>
+      /// This method will list all of the actively managed passwords.
+      /// </summary>
       public string List()
       {
          var sb = new StringBuilder();
@@ -156,6 +159,9 @@ namespace PassLock.Manager.Utils
          return true;
       }
 
+      /// <summary>
+      /// This method will generate a random 32-bit key from a Guid. If an input key is used it will still return a 32-bit key regardless of input length containing the orignal input.
+      /// </summary>
       public string GenerateKey(string input = null)
       {
          return PadKey(input);

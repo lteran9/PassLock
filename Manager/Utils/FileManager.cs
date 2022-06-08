@@ -8,6 +8,9 @@ namespace PassLock.Manager.Utils
    {
       static readonly string FilePath = "Manager/Encrypted/passwords.json";
 
+      /// <summary>
+      /// This method will return the file contents at [FilePath].
+      /// </summary>
       public static async Task<string> GetFileContent()
       {
          try
@@ -28,6 +31,9 @@ namespace PassLock.Manager.Utils
          return string.Empty;
       }
 
+      /// <summary> 
+      /// This method will overwrite the contents at [FilePath]. If the file does not exist it will be automatically created.
+      /// </summary>
       public static async void SaveContentToFile(string content)
       {
          try
