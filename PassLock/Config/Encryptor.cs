@@ -15,7 +15,7 @@ namespace PassLock.Config
          using (Aes aes = Aes.Create())
          {
             aes.Key = Encoding.UTF8.GetBytes(key);
-            aes.IV = _IV;
+            //aes.IV = _IV;
             var symmetricEncryptor = aes.CreateEncryptor(aes.Key, aes.IV);
 
             using (var memoryStream = new MemoryStream())
@@ -46,7 +46,7 @@ namespace PassLock.Config
          using (Aes aes = Aes.Create())
          {
             aes.Key = Encoding.UTF8.GetBytes(key);
-            aes.IV = _IV;
+            //aes.IV = _IV;
             var decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
 
             using (var memoryStream = new MemoryStream(buffer))
