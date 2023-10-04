@@ -11,22 +11,28 @@ namespace PassLock
    /// </summary>
    public class Program
    {
+      private static IConfiguration? _config;
+
       static void Main(string[] args)
       {
-         // Add appsettings.json file to Program
-         var builder = new ConfigurationBuilder().AddJsonFile("appsettings.json", true, true);
-         // Get configuration settings
-         var config = builder.Build();
+         string RED = Console.IsOutputRedirected ? "" : "\x1b[91m";
+         string NORMAL = Console.IsOutputRedirected ? "" : "\x1b[39m";
 
-         // Console.WriteLine(config["AppSettings:Version"]);
+         // Add appsettings.json file to Program
+         var builder =
+            new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json", true, true);
 
          try
          {
+            // Get configuration settings
+            _config = builder.Build();
+
             ProcessInput(args);
          }
          catch (Exception ex)
          {
-            Console.WriteLine(ex.Message);
+            Console.Write($"{RED}Error:{NORMAL}\n\t-{ex.Message}\n");
          }
       }
 
@@ -39,20 +45,25 @@ namespace PassLock
          }
          else
          {
-            // Read command and handle operation
-            switch (args[0])
+            // Can't really do anything without the configuration settings
+            if (_config != null)
             {
-               case "encrypt": // Run encrypt operation
-                  if (!string.IsNullOrEmpty(args[1]))
-                  {
-                     var textToEncrypt = args[1];
+               // Read command and handle operation
+               switch (args[0])
+               {
+                  case "encrypt": // Run encrypt operation
+                     if (!string.IsNullOrEmpty(args[1]))
+                     {
+                        Console.WriteLine(Encryptor.Encrypt(args[1], _config["AppSettings:EncryptionKey"] ?? string.Empty));
+                     }
 
-                     Console.WriteLine(Encryptor.Encrypt(args[1], "abc123"));
-                  }
+                     break;
+                  case "decrypt":
 
-                  break;
-               default:
-                  break;
+                     break;
+                  default:
+                     break;
+               }
             }
          }
       }

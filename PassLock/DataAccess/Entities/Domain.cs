@@ -9,5 +9,10 @@ namespace PassLock
       public DateTime CreatedAt { get; set; }
       public DateTime UpdatedAt { get; set; }
 
+      public Domain()
+      {
+         Url = string.Empty;
+      }
+
    }
 }

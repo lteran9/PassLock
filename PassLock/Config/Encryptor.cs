@@ -10,14 +10,12 @@ namespace PassLock.Config
       /// </summary>
       /// <param name="plaintext"></param>
       /// <returns></returns>
-      internal static string Encrypt(string data, string key)
+      internal static string Encrypt(string data, out string key)
       {
          using (Aes aes = Aes.Create())
          {
-            aes.Key = Encoding.UTF8.GetBytes(key);
-            //aes.IV = _IV;
-            var symmetricEncryptor = aes.CreateEncryptor(aes.Key, aes.IV);
-
+            var symmetricEncryptor = aes.CreateEncryptor();
+            key = Convert.ToHexString(aes.Key);
             using (var memoryStream = new MemoryStream())
             {
                using (var cryptoStream = new CryptoStream(memoryStream, symmetricEncryptor, CryptoStreamMode.Write))
