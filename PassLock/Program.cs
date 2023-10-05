@@ -3,6 +3,7 @@ using System.Security.Cryptography;
 using Microsoft.Extensions.Configuration;
 using PassLock.Config;
 using PassLock.InputReader;
+using PassLock.DataAccess;
 
 namespace PassLock
 {
@@ -15,9 +16,6 @@ namespace PassLock
 
       static void Main(string[] args)
       {
-         string RED = Console.IsOutputRedirected ? "" : "\x1b[91m";
-         string NORMAL = Console.IsOutputRedirected ? "" : "\x1b[39m";
-
          // Add appsettings.json file to Program
          var builder =
             new ConfigurationBuilder()
@@ -32,7 +30,7 @@ namespace PassLock
          }
          catch (Exception ex)
          {
-            Console.Write($"{RED}Error:{NORMAL}\n\t-{ex.Message}\n");
+            Log.Error(ex.Message);
          }
       }
 
@@ -45,25 +43,28 @@ namespace PassLock
          }
          else
          {
-            // Can't really do anything without the configuration settings
-            if (_config != null)
+            // Read command and handle operation
+            switch (args[0])
             {
-               // Read command and handle operation
-               switch (args[0])
-               {
-                  case "encrypt": // Run encrypt operation
-                     if (!string.IsNullOrEmpty(args[1]))
-                     {
-                        Console.WriteLine(Encryptor.Encrypt(args[1], _config["AppSettings:EncryptionKey"] ?? string.Empty));
-                     }
+               case "encrypt": // Run encrypt operation
+                  if (!string.IsNullOrEmpty(args[1]))
+                  {
+                     Console.WriteLine(Encryptor.Encrypt(args[1], out string key));
 
-                     break;
-                  case "decrypt":
+                     Log.Info(key);
+                  }
+                  break;
+               case "decrypt": // Run decrypt operation
 
-                     break;
-                  default:
-                     break;
-               }
+                  break;
+               case "domain": //  add, list, remove
+
+                  break;
+               case "account": // add, list, remove
+
+                  break;
+               default:
+                  break;
             }
          }
       }

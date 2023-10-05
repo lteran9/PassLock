@@ -3,6 +3,7 @@ namespace PassLock.DataAccess.Entities
    public class Password
    {
       public int Id { get; set; }
+      public int AccountId { get; set; }
 
       public string Value { get; set; }
       public string Salt { get; set; }

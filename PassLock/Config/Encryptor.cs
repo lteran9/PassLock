@@ -15,7 +15,9 @@ namespace PassLock.Config
          using (Aes aes = Aes.Create())
          {
             var symmetricEncryptor = aes.CreateEncryptor();
+
             key = Convert.ToHexString(aes.Key);
+
             using (var memoryStream = new MemoryStream())
             {
                using (var cryptoStream = new CryptoStream(memoryStream, symmetricEncryptor, CryptoStreamMode.Write))

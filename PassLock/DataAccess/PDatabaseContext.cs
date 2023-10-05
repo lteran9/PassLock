@@ -7,6 +7,8 @@ namespace PassLock.DataAccess
 {
    public class PDatabaseContext : DbContext
    {
+      public DbSet<Domain> Domains { get; set; }
+      public DbSet<Account> Accounts { get; set; }
       public DbSet<Password> Passwords { get; set; }
 
 #pragma warning disable CS8618
