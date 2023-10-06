@@ -23,6 +23,11 @@ namespace PassLock.DataAccess
       {
          base.OnModelCreating(builder);
 
+         // builder.Entity<Password>()
+         //    .HasOne<Account>();
+         // builder.Entity<Account>()
+         //    .HasOne<Domain>();
+
          // Run seeds
          //builder.SeedDatabase();
       }

@@ -10,13 +10,14 @@ namespace PassLock.Config
       /// </summary>
       /// <param name="plaintext"></param>
       /// <returns></returns>
-      internal static string Encrypt(string data, out string key)
+      internal static string Encrypt(string data, out string key, out string iv)
       {
          using (Aes aes = Aes.Create())
          {
             var symmetricEncryptor = aes.CreateEncryptor();
 
-            key = Convert.ToHexString(aes.Key);
+            iv = Convert.ToBase64String(aes.IV);
+            key = Convert.ToBase64String(aes.Key);
 
             using (var memoryStream = new MemoryStream())
             {
@@ -26,7 +27,6 @@ namespace PassLock.Config
                   {
                      streamWriter.Write(data);
                   }
-
 
                   return Convert.ToBase64String(memoryStream.ToArray());
                }
@@ -39,15 +39,13 @@ namespace PassLock.Config
       /// </summary>
       /// <param name="plaintext"></param>
       /// <returns></returns>
-      internal static string Decrypt(string cipherText, string key)
+      internal static string Decrypt(string cipherText, string key, string iv)
       {
          byte[] buffer = Convert.FromBase64String(cipherText);
 
          using (Aes aes = Aes.Create())
          {
-            aes.Key = Encoding.UTF8.GetBytes(key);
-            //aes.IV = _IV;
-            var decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
+            var decryptor = aes.CreateDecryptor(Convert.FromBase64String(key), Convert.FromBase64String(iv));
 
             using (var memoryStream = new MemoryStream(buffer))
             {

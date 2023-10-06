@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace PassLock.DataAccess.Entities
 {
    public class Password
@@ -9,10 +11,11 @@ namespace PassLock.DataAccess.Entities
       public string Salt { get; set; }
       public string InitializationVector { get; set; }
 
-      public HashMethod HashMethod { get; set; }
-
       public DateTime CreatedAt { get; set; }
       public DateTime UpdatedAt { get; set; }
+
+      [ForeignKey("AccountId")]
+      public virtual Account Account { get; set; }
 
       public Password()
       {
@@ -21,6 +24,8 @@ namespace PassLock.DataAccess.Entities
          InitializationVector = string.Empty;
          CreatedAt = DateTime.MinValue;
          UpdatedAt = DateTime.MinValue;
+
+         Account = new Account();
       }
    }
 }

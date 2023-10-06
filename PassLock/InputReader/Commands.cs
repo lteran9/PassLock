@@ -14,7 +14,7 @@ namespace PassLock.InputReader
       public static void Help()
       {
          var message = new StringBuilder();
-         message.Append("Usage: passlock [runtime-options] [arguments]\n\n");
+         message.Append("Usage: passlock [operation] [arguments]...\n\n");
          message.Append("Manage your passwords directly from the command line.\n\n");
          message.Append("runtime-options:\n\n");
 
