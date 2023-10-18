@@ -68,6 +68,40 @@ namespace PassLock
          return _db.Accounts;
       }
 
-      #endregion 
+      #endregion
+
+      #region Domains 
+
+      internal void AddDomain(Domain dom)
+      {
+         if (!string.IsNullOrEmpty(dom?.Url))
+         {
+            _db.Domains.Add(dom);
+            _db.SaveChanges();
+         }
+      }
+
+      internal void RemoveDomain(int id = 0)
+      {
+         if (id > 0)
+         {
+            var dom = new Domain() { Id = id };
+            _db.Domains.Attach(dom);
+            _db.Domains.Remove(dom);
+            _db.SaveChanges();
+         }
+      }
+
+      internal IEnumerable<Domain>? GetDomains(int id = 0)
+      {
+         if (id > 0)
+         {
+            return _db.Domains.Where(x => x.Id == id);
+         }
+
+         return _db.Domains.ToList();
+      }
+
+      #endregion
    }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.Extensions.Configuration;
 using PassLock.Config;
-using PassLock.DataAccess;
 using PassLock.DataAccess.Entities;
 using PassLock.InputReader;
 
@@ -17,7 +17,6 @@ namespace PassLock
 
       static void Main(string[] args)
       {
-
          // Add appsettings.json file to Program
          var builder =
             new ConfigurationBuilder()
@@ -31,6 +30,8 @@ namespace PassLock
             _config = builder.Build();
 
             ProcessInput(args);
+
+            OsxClipboard.SetText("Hello, world!");
          }
          catch (Exception ex)
          {
@@ -77,7 +78,48 @@ namespace PassLock
                   }
                   break;
                case "domain": //  add, list, remove
+                  switch (args[1])
+                  {
+                     case "add":
+                        var domain = new Domain();
+                        Console.Write("Enter domain: ");
+                        domain.Url = Console.ReadLine() ?? string.Empty;
+                        if (string.IsNullOrEmpty(domain.Url))
+                        {
+                           throw new InvalidOperationException("Please enter a valid domain.");
+                        }
 
+                        _lib?.AddDomain(domain);
+
+                        break;
+                     case "list":
+                        if (_lib != null)
+                        {
+                           var domains = _lib.GetDomains() ?? new List<Domain>();
+                           if (domains?.Count() > 0)
+                           {
+                              foreach (var dom in domains)
+                              {
+                                 Console.Write($"{dom.Id}. {dom.Url}\n");
+                              }
+                           }
+                           else
+                           {
+                              Console.WriteLine("No domains found in database.");
+                           }
+                        }
+                        break;
+                     case "remove":
+                        Console.Write("Please enter the domain id: ");
+                        var input = Console.ReadLine();
+                        int.TryParse(input, out int domainId);
+
+                        _lib?.RemoveDomain(domainId);
+
+                        break;
+                     default:
+                        break;
+                  }
                   break;
                case "account": // add, list, remove
                   switch (args[1])
@@ -100,9 +142,16 @@ namespace PassLock
                         if (_lib != null)
                         {
                            var accounts = _lib.GetAccounts() ?? new List<Account>();
-                           foreach (var acct in accounts)
+                           if (accounts?.Count() > 0)
                            {
-                              Console.Write($"{acct.Id}. {acct.Email}\n");
+                              foreach (var acct in accounts)
+                              {
+                                 Console.Write($"{acct.Id}. {acct.Email}\n");
+                              }
+                           }
+                           else
+                           {
+                              Console.WriteLine("No accounts found in database.");
                            }
                         }
                         break;
@@ -113,6 +162,7 @@ namespace PassLock
                   }
                   break;
                default:
+                  Log.Error("Unable to identify operation.");
                   break;
             }
          }

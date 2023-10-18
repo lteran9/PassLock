@@ -12,6 +12,8 @@ namespace PassLock
       public Domain()
       {
          Url = string.Empty;
+         CreatedAt = DateTime.Now;
+         UpdatedAt = DateTime.Now;
       }
 
    }

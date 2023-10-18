@@ -10,6 +10,7 @@ namespace PassLock.DataAccess
       public DbSet<Domain> Domains { get; set; }
       public DbSet<Account> Accounts { get; set; }
       public DbSet<Password> Passwords { get; set; }
+      public DbSet<AccountPasswordForDomain> AccountDomainPasswords { get; set; }
 
 #pragma warning disable CS8618
       public PDatabaseContext()
@@ -23,10 +24,8 @@ namespace PassLock.DataAccess
       {
          base.OnModelCreating(builder);
 
-         // builder.Entity<Password>()
-         //    .HasOne<Account>();
-         // builder.Entity<Account>()
-         //    .HasOne<Domain>();
+         builder.Entity<AccountPasswordForDomain>()
+            .HasKey(x => x.UniqueIdentifier);
 
          // Run seeds
          //builder.SeedDatabase();
