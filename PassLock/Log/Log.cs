@@ -16,5 +16,14 @@ namespace PassLock
       {
          Console.Write($"{RED}Error:{NORMAL}\n\t-{message}\n");
       }
+
+      public static void Error(Exception ex)
+      {
+         Error(ex.Message);
+         if (!string.IsNullOrEmpty(ex.InnerException?.Message))
+         {
+            Console.Write($"\t-{ex.InnerException.Message}\n");
+         }
+      }
    }
 }

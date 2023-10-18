@@ -2,7 +2,7 @@ using System;
 
 namespace PassLock.Config
 {
-   public static class DatabaseSettings
+   internal static class DatabaseSettings
    {
       public static string SqlitePath = "";
 

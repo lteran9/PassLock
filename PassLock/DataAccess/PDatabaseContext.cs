@@ -5,7 +5,7 @@ using PassLock.DataAccess.Entities;
 
 namespace PassLock.DataAccess
 {
-   public class PDatabaseContext : DbContext
+   internal class PDatabaseContext : DbContext
    {
       public DbSet<Domain> Domains { get; set; }
       public DbSet<Account> Accounts { get; set; }
@@ -23,9 +23,6 @@ namespace PassLock.DataAccess
       protected override void OnModelCreating(ModelBuilder builder)
       {
          base.OnModelCreating(builder);
-
-         builder.Entity<AccountPasswordForDomain>()
-            .HasKey(x => x.UniqueIdentifier);
 
          // Run seeds
          //builder.SeedDatabase();

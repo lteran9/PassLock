@@ -1,9 +1,11 @@
 using System;
-using PassLock.DataAccess;
 using PassLock.DataAccess.Entities;
 
-namespace PassLock
+namespace PassLock.DataAccess
 {
+   /// <summary>
+   /// This class handles all CRUD operations for database entities.
+   /// </summary>
    public class Library
    {
       private readonly PDatabaseContext _db;
@@ -101,6 +103,57 @@ namespace PassLock
 
          return _db.Domains.ToList();
       }
+
+      #endregion
+
+      #region Passwords 
+
+      internal int AddPassword(Password pwd)
+      {
+         if (pwd != null)
+         {
+            _db.Passwords.Add(pwd);
+            _db.SaveChanges();
+            return pwd.Id;
+         }
+
+         return -1;
+      }
+
+      internal Password? GetPassword(int accountId, int domainId)
+      {
+         if (accountId > 0 && domainId > 0)
+         {
+            var accountDomainPwd =
+               _db.AccountDomainPasswords.FirstOrDefault(x => x.AccountId == accountId && x.DomainId == domainId);
+
+            return accountDomainPwd?.Password;
+         }
+
+         return null;
+      }
+
+#pragma warning disable CS8625
+      internal void AddAccountPassword(int accountId, int domainId, int passwordId)
+      {
+         if (accountId > 0 && domainId > 0 && passwordId > 0)
+         {
+            _db.AccountDomainPasswords.Add(
+               new AccountPasswordForDomain()
+               {
+                  AccountId = accountId,
+                  DomainId = domainId,
+                  PasswordId = passwordId,
+                  // Explicitly remove default objects to prevent creation of new account, password, and domain
+                  Account = null,
+                  Password = null,
+                  Domain = null
+               }
+            );
+            _db.SaveChanges();
+         }
+      }
+#pragma warning restore CS8625
 
       #endregion
    }

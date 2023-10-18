@@ -23,19 +23,32 @@ namespace PassLock.InputReader
          Console.WriteLine(message);
       }
 
-      public static void List()
+      public static string ReadPrivateString()
       {
+         var result = new StringBuilder();
+         while (true)
+         {
+            ConsoleKeyInfo key = Console.ReadKey(true);
 
-      }
+            switch (key.Key)
+            {
+               case ConsoleKey.Enter:
+                  return result.ToString();
+               case ConsoleKey.Backspace:
+                  if (result.Length == 0)
+                  {
+                     continue;
+                  }
 
-      public static void Add()
-      {
-
-      }
-
-      public static void Remove()
-      {
-
+                  result.Length--;
+                  Console.Write("\b \b");
+                  continue;
+               default:
+                  result.Append(key.KeyChar);
+                  Console.Write("*");
+                  continue;
+            }
+         }
       }
    }
 }

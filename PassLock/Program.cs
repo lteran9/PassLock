@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.Extensions.Configuration;
 using PassLock.Config;
+using PassLock.DataAccess;
 using PassLock.DataAccess.Entities;
 using PassLock.InputReader;
 
@@ -35,7 +36,7 @@ namespace PassLock
          }
          catch (Exception ex)
          {
-            Log.Error(ex.Message);
+            Log.Error(ex);
          }
       }
 
@@ -52,29 +53,64 @@ namespace PassLock
             switch (args[0])
             {
                case "encrypt": // Run encrypt operation
-
-                  // Select account and domain
-                  if (!string.IsNullOrEmpty(args[1]))
+                  if (args.Length >= 3)
                   {
-                     var encryptedPassword = Encryptor.Encrypt(args[1], out string key, out string iv);
+                     // Get account and domain
+                     int.TryParse(args[1], out int accountId);
+                     int.TryParse(args[2], out int domainId);
 
-                     // _db?.Passwords?.Add(
-                     //    new Password()
-                     //    {
-                     //       Value = encryptedPassword,
-                     //       Salt = key,
-                     //       InitializationVector = iv,
-                     //       CreatedAt = DateTime.Now,
-                     //       UpdatedAt = DateTime.Now
-                     //    }
-                     // );
-                     // _db?.SaveChanges();
+                     if (accountId > 0 && domainId > 0)
+                     {
+                        Console.Write("Enter password: ");
+                        var password = Console.ReadLine() ?? string.Empty;
+                        var encryptedPassword = Encryptor.Encrypt(password, out string key, out string iv);
+                        var pwdId = _lib?.AddPassword(
+                           new Password()
+                           {
+                              Key = key,
+                              Value = encryptedPassword,
+                              InitializationVector = iv
+                           }
+                        ) ?? 0;
+
+                        if (pwdId > 0)
+                        {
+                           _lib?.AddAccountPassword(accountId, domainId, pwdId);
+                        }
+                        else
+                        {
+                           throw new Exception("Unable to save password to database.");
+                        }
+                     }
+                     else
+                     {
+                        Log.Error("Invalid account or domain id.");
+                     }
+                  }
+                  else
+                  {
+                     Log.Error("Missing arguments.");
                   }
                   break;
                case "decrypt": // Run decrypt operation
-                  if (!string.IsNullOrEmpty(args[1]) && !string.IsNullOrEmpty(args[2]) && !string.IsNullOrEmpty(args[3]))
+                  if (args.Length >= 3)
                   {
-                     Console.WriteLine(Encryptor.Decrypt(args[1], args[2], args[3]));
+                     // Get account and domain
+                     int.TryParse(args[1], out int accountId);
+                     int.TryParse(args[2], out int domainId);
+
+                     if (accountId > 0 && domainId > 0)
+                     {
+                        var pwd = _lib?.GetPassword(accountId, domainId);
+                        if (!string.IsNullOrEmpty(pwd?.Value))
+                        {
+                           Console.WriteLine(Encryptor.Decrypt(pwd.Value, pwd.Key, pwd.InitializationVector));
+                        }
+                        else
+                        {
+                           throw new Exception("Password value is empty.");
+                        }
+                     }
                   }
                   break;
                case "domain": //  add, list, remove
@@ -118,10 +154,12 @@ namespace PassLock
 
                         break;
                      default:
+                        Log.Error("Unable to determine `domain` operation.");
                         break;
                   }
                   break;
                case "account": // add, list, remove
+                  // 
                   switch (args[1])
                   {
                      case "add":
@@ -156,8 +194,28 @@ namespace PassLock
                         }
                         break;
                      case "remove":
+                        if (args.Length >= 3)
+                        {
+                           if (int.TryParse(args[2], out int id))
+                           {
+                              _lib?.RemoveAccount(id: id);
+                           }
+                           else if (args[2]?.Contains("@") == true)
+                           {
+                              _lib?.RemoveAccount(email: args[2]);
+                           }
+                           else
+                           {
+                              _lib?.RemoveAccount(username: args[2]);
+                           }
+                        }
+                        else
+                        {
+                           Log.Error("Please enter an account identifier.");
+                        }
                         break;
                      default:
+                        Log.Error("Unable to determine `account` operation.");
                         break;
                   }
                   break;
