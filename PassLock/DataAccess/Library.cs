@@ -127,7 +127,11 @@ namespace PassLock.DataAccess
             var accountDomainPwd =
                _db.AccountDomainPasswords.FirstOrDefault(x => x.AccountId == accountId && x.DomainId == domainId);
 
-            return accountDomainPwd?.Password;
+            if (accountDomainPwd != null)
+            {
+               // Cannot use transitive object found in accountDomainPwd.Password....
+               return _db.Passwords.FirstOrDefault(x => x.Id == accountDomainPwd.PasswordId);
+            }
          }
 
          return null;
