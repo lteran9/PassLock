@@ -15,6 +15,5 @@ namespace PassLock
          CreatedAt = DateTime.Now;
          UpdatedAt = DateTime.Now;
       }
-
    }
 }

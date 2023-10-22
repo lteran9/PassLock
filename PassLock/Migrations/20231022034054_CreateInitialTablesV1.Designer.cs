@@ -11,7 +11,7 @@ using PassLock.DataAccess;
 namespace PassLock.Migrations
 {
     [DbContext(typeof(PDatabaseContext))]
-    [Migration("20231018042854_CreateInitialTablesV1")]
+    [Migration("20231022034054_CreateInitialTablesV1")]
     partial class CreateInitialTablesV1
     {
         /// <inheritdoc />
@@ -22,18 +22,14 @@ namespace PassLock.Migrations
 
             modelBuilder.Entity("PassLock.AccountPasswordForDomain", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("AccountId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("AccountId")
+                    b.Property<int>("DomainId")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("DomainId")
-                        .HasColumnType("INTEGER");
 
                     b.Property<int>("PasswordId")
                         .HasColumnType("INTEGER");
@@ -41,9 +37,7 @@ namespace PassLock.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("AccountId");
+                    b.HasKey("AccountId", "DomainId");
 
                     b.HasIndex("DomainId");
 

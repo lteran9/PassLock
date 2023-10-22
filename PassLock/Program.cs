@@ -31,8 +31,6 @@ namespace PassLock
             _config = builder.Build();
 
             ProcessInput(args);
-
-            OsxClipboard.SetText("Hello, world!");
          }
          catch (Exception ex)
          {
@@ -104,11 +102,12 @@ namespace PassLock
                         var pwd = _lib?.GetPassword(accountId, domainId);
                         if (!string.IsNullOrEmpty(pwd?.Value))
                         {
-                           Console.WriteLine(Encryptor.Decrypt(pwd.Value, pwd.Key, pwd.InitializationVector));
+                           OsxClipboard.SetText(Encryptor.Decrypt(pwd.Value, pwd.Key, pwd.InitializationVector));
+                           Log.Info("Value copied to clipboard.");
                         }
                         else
                         {
-                           throw new Exception("Password value is empty.");
+                           Log.Error("Password value is empty.");
                         }
                      }
                   }

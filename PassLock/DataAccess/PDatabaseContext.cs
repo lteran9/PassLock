@@ -23,9 +23,6 @@ namespace PassLock.DataAccess
       protected override void OnModelCreating(ModelBuilder builder)
       {
          base.OnModelCreating(builder);
-
-         // Run seeds
-         //builder.SeedDatabase();
       }
 
       // The following configures EF to create a Sqlite database file in the

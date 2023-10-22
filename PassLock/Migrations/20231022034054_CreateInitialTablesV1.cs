@@ -63,8 +63,6 @@ namespace PassLock.Migrations
                 name: "AccountDomainPasswords",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
                     AccountId = table.Column<int>(type: "INTEGER", nullable: false),
                     DomainId = table.Column<int>(type: "INTEGER", nullable: false),
                     PasswordId = table.Column<int>(type: "INTEGER", nullable: false),
@@ -73,7 +71,7 @@ namespace PassLock.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AccountDomainPasswords", x => x.Id);
+                    table.PrimaryKey("PK_AccountDomainPasswords", x => new { x.AccountId, x.DomainId });
                     table.ForeignKey(
                         name: "FK_AccountDomainPasswords_Accounts_AccountId",
                         column: x => x.AccountId,
@@ -93,11 +91,6 @@ namespace PassLock.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AccountDomainPasswords_AccountId",
-                table: "AccountDomainPasswords",
-                column: "AccountId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AccountDomainPasswords_DomainId",

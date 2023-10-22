@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 using PassLock.DataAccess.Entities;
 
@@ -6,9 +7,9 @@ namespace PassLock
    /// <summary>
    /// Keep track of which password belongs to which account + domain combination.
    /// </summary>
+   [PrimaryKey(nameof(AccountId), nameof(DomainId))]
    public class AccountPasswordForDomain
    {
-      public int Id { get; set; }
       [ForeignKey("Account")]
       public int AccountId { get; set; }
       [ForeignKey("Domain")]
