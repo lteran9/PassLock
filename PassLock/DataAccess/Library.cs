@@ -8,22 +8,18 @@ namespace PassLock.DataAccess
    /// </summary>
    public class Library
    {
-      private readonly PDatabaseContext _db;
-
-      public Library()
-      {
-         _db = new PDatabaseContext();
-      }
-
       #region Accounts 
 
       internal void AddAccount(Account acc)
       {
-         // Verify we have an email or a username
-         if (!string.IsNullOrEmpty(acc?.Email) || !string.IsNullOrEmpty(acc?.UserName))
+         using (var db = new PDatabaseContext())
          {
-            _db.Accounts.Add(acc);
-            _db.SaveChanges();
+            // Verify we have an email or a username
+            if (!string.IsNullOrEmpty(acc?.Email) || !string.IsNullOrEmpty(acc?.UserName))
+            {
+               db.Accounts.Add(acc);
+               db.SaveChanges();
+            }
          }
       }
 
@@ -46,28 +42,34 @@ namespace PassLock.DataAccess
 
          if (account != null)
          {
-            _db.Accounts.Attach(account);
-            _db.Accounts.Remove(account);
-            _db.SaveChanges();
+            using (var db = new PDatabaseContext())
+            {
+               db.Accounts.Attach(account);
+               db.Accounts.Remove(account);
+               db.SaveChanges();
+            }
          }
       }
 
       internal IEnumerable<Account>? GetAccounts(int id = 0, string email = "", string username = "")
       {
-         if (id > 0)
+         using (var db = new PDatabaseContext())
          {
-            return _db.Accounts.Where(x => x.Id == id);
-         }
-         else if (!string.IsNullOrEmpty(email))
-         {
-            return _db.Accounts.Where(x => x.Email == email);
-         }
-         else if (!string.IsNullOrEmpty(username))
-         {
-            return _db.Accounts.Where(x => x.UserName == username);
-         }
+            if (id > 0)
+            {
+               return db.Accounts.Where(x => x.Id == id);
+            }
+            else if (!string.IsNullOrEmpty(email))
+            {
+               return db.Accounts.Where(x => x.Email == email);
+            }
+            else if (!string.IsNullOrEmpty(username))
+            {
+               return db.Accounts.Where(x => x.UserName == username);
+            }
 
-         return _db.Accounts;
+            return db.Accounts;
+         }
       }
 
       #endregion
@@ -78,8 +80,11 @@ namespace PassLock.DataAccess
       {
          if (!string.IsNullOrEmpty(dom?.Url))
          {
-            _db.Domains.Add(dom);
-            _db.SaveChanges();
+            using (var db = new PDatabaseContext())
+            {
+               db.Domains.Add(dom);
+               db.SaveChanges();
+            }
          }
       }
 
@@ -87,21 +92,27 @@ namespace PassLock.DataAccess
       {
          if (id > 0)
          {
-            var dom = new Domain() { Id = id };
-            _db.Domains.Attach(dom);
-            _db.Domains.Remove(dom);
-            _db.SaveChanges();
+            using (var db = new PDatabaseContext())
+            {
+               var dom = new Domain() { Id = id };
+               db.Domains.Attach(dom);
+               db.Domains.Remove(dom);
+               db.SaveChanges();
+            }
          }
       }
 
       internal IEnumerable<Domain>? GetDomains(int id = 0)
       {
-         if (id > 0)
+         using (var db = new PDatabaseContext())
          {
-            return _db.Domains.Where(x => x.Id == id);
-         }
+            if (id > 0)
+            {
+               return db.Domains.Where(x => x.Id == id);
+            }
 
-         return _db.Domains.ToList();
+            return db.Domains.ToList();
+         }
       }
 
       #endregion
@@ -112,9 +123,12 @@ namespace PassLock.DataAccess
       {
          if (pwd != null)
          {
-            _db.Passwords.Add(pwd);
-            _db.SaveChanges();
-            return pwd.Id;
+            using (var db = new PDatabaseContext())
+            {
+               db.Passwords.Add(pwd);
+               db.SaveChanges();
+               return pwd.Id;
+            }
          }
 
          return -1;
@@ -124,13 +138,16 @@ namespace PassLock.DataAccess
       {
          if (accountId > 0 && domainId > 0)
          {
-            var accountDomainPwd =
-               _db.AccountDomainPasswords.FirstOrDefault(x => x.AccountId == accountId && x.DomainId == domainId);
-
-            if (accountDomainPwd != null)
+            using (var db = new PDatabaseContext())
             {
-               // Cannot use transitive object found in accountDomainPwd.Password....
-               return _db.Passwords.FirstOrDefault(x => x.Id == accountDomainPwd.PasswordId);
+               var accountDomainPwd =
+                  db.AccountDomainPasswords.FirstOrDefault(x => x.AccountId == accountId && x.DomainId == domainId);
+
+               if (accountDomainPwd != null)
+               {
+                  // Cannot use transitive object found in accountDomainPwd.Password....
+                  return db.Passwords.FirstOrDefault(x => x.Id == accountDomainPwd.PasswordId);
+               }
             }
          }
 
@@ -142,19 +159,22 @@ namespace PassLock.DataAccess
       {
          if (accountId > 0 && domainId > 0 && passwordId > 0)
          {
-            _db.AccountDomainPasswords.Add(
-               new AccountPasswordForDomain()
-               {
-                  AccountId = accountId,
-                  DomainId = domainId,
-                  PasswordId = passwordId,
-                  // Explicitly remove default objects to prevent creation of new account, password, and domain
-                  Account = null,
-                  Password = null,
-                  Domain = null
-               }
-            );
-            _db.SaveChanges();
+            using (var db = new PDatabaseContext())
+            {
+               db.AccountDomainPasswords.Add(
+                  new AccountPasswordForDomain()
+                  {
+                     AccountId = accountId,
+                     DomainId = domainId,
+                     PasswordId = passwordId,
+                     // Explicitly remove default objects to prevent creation of new account, password, and domain
+                     Account = null,
+                     Password = null,
+                     Domain = null
+                  }
+               );
+               db.SaveChanges();
+            }
          }
       }
 #pragma warning restore CS8625

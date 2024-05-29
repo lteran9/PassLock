@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace PassLock.DataAccess.Entities
 {
    public class Password

@@ -21,7 +21,7 @@ namespace PassLock
          // Add appsettings.json file to Program
          var builder =
             new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json", true, true);
+               .AddJsonFile("appsettings.json", true, true);
 
          try
          {
