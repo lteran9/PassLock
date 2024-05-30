@@ -1,6 +1,6 @@
 using System;
 
-namespace PassLock.Config
+namespace PassLock.EntityFramework.Config
 {
    internal static class DatabaseSettings
    {

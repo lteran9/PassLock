@@ -1,9 +1,9 @@
 using System;
 using Microsoft.EntityFrameworkCore;
-using PassLock.Config;
-using PassLock.DataAccess.Entities;
+using PassLock.Core;
+using PassLock.EntityFramework.Config;
 
-namespace PassLock.DataAccess
+namespace PassLock.EntityFramework
 {
    internal class PDatabaseContext : DbContext
    {
@@ -23,6 +23,9 @@ namespace PassLock.DataAccess
       protected override void OnModelCreating(ModelBuilder builder)
       {
          base.OnModelCreating(builder);
+         builder.Entity<AccountPasswordForDomain>()
+            .HasKey(x => new { x.AccountId, x.PasswordId, x.DomainId });
+
       }
 
       // The following configures EF to create a Sqlite database file in the

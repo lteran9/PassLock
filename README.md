@@ -1,6 +1,17 @@
 # PassLock
+
 Password manager that encrypts and decrypts values provided by the user.
 
-## NuGet
-- EF Core
-- SqlLite
+## NuGet Dependencies
+- Entity Framework Core
+- Sqlite
+
+## Usage
+
+### Accounts
+
+### Passwords
+
+## Encryption
+
+## Decryption

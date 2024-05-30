@@ -1,7 +1,7 @@
 using System.Text;
 using System.Security.Cryptography;
 
-namespace PassLock.Config
+namespace PassLock.EntityFramework.Config
 {
    public static class Encryptor
    {

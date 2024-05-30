@@ -1,4 +1,6 @@
-namespace PassLock.DataAccess.Entities
+using System;
+
+namespace PassLock.Core
 {
    public class Password
    {
