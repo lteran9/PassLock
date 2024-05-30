@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Linq;
 using Microsoft.Extensions.Configuration;
-using PassLock.Config;
-using PassLock.DataAccess;
-using PassLock.DataAccess.Entities;
 using PassLock.InputReader;
+using PassLock.EntityFramework;
+using PassLock.Commands;
+using PassLock.Core;
 
 namespace PassLock
 {
@@ -43,7 +42,7 @@ namespace PassLock
          if (args.Length == 0)
          {
             // Display --help information
-            Commands.Help();
+            PassLock.InputReader.Commands.Help();
          }
          else
          {
@@ -61,24 +60,24 @@ namespace PassLock
                      {
                         Console.Write("Enter password: ");
                         var password = Console.ReadLine() ?? string.Empty;
-                        var encryptedPassword = Encryptor.Encrypt(password, out string key, out string iv);
-                        var pwdId = _lib?.AddPassword(
-                           new Password()
-                           {
-                              Key = key,
-                              Value = encryptedPassword,
-                              InitializationVector = iv
-                           }
-                        ) ?? 0;
+                        // var encryptedPassword = Encryptor.Encrypt(password, out string key, out string iv);
+                        // var pwdId = _lib?.AddPassword(
+                        //    new Password()
+                        //    {
+                        //       Key = key,
+                        //       Value = encryptedPassword,
+                        //       InitializationVector = iv
+                        //    }
+                        // ) ?? 0;
 
-                        if (pwdId > 0)
-                        {
-                           _lib?.AddAccountPassword(accountId, domainId, pwdId);
-                        }
-                        else
-                        {
-                           throw new Exception("Unable to save password to database.");
-                        }
+                        // if (pwdId > 0)
+                        // {
+                        //    _lib?.AddAccountPassword(accountId, domainId, pwdId);
+                        // }
+                        // else
+                        // {
+                        //    throw new Exception("Unable to save password to database.");
+                        // }
                      }
                      else
                      {
@@ -99,16 +98,16 @@ namespace PassLock
 
                      if (accountId > 0 && domainId > 0)
                      {
-                        var pwd = _lib?.GetPassword(accountId, domainId);
-                        if (!string.IsNullOrEmpty(pwd?.Value))
-                        {
-                           OsxClipboard.SetText(Encryptor.Decrypt(pwd.Value, pwd.Key, pwd.InitializationVector));
-                           Log.Info("Value copied to clipboard.");
-                        }
-                        else
-                        {
-                           Log.Error("Password value is empty.");
-                        }
+                        // var pwd = _lib?.GetPassword(accountId, domainId);
+                        // if (!string.IsNullOrEmpty(pwd?.Value))
+                        // {
+                        //    OsxClipboard.SetText(Encryptor.Decrypt(pwd.Value, pwd.Key, pwd.InitializationVector));
+                        //    Log.Info("Value copied to clipboard.");
+                        // }
+                        // else
+                        // {
+                        //    Log.Error("Password value is empty.");
+                        // }
                      }
                   }
                   break;
@@ -116,33 +115,33 @@ namespace PassLock
                   switch (args[1])
                   {
                      case "add":
-                        var domain = new Domain();
-                        Console.Write("Enter domain: ");
-                        domain.Url = Console.ReadLine() ?? string.Empty;
-                        if (string.IsNullOrEmpty(domain.Url))
-                        {
-                           throw new InvalidOperationException("Please enter a valid domain.");
-                        }
+                        // var domain = new Domain();
+                        // Console.Write("Enter domain: ");
+                        // domain.Url = Console.ReadLine() ?? string.Empty;
+                        // if (string.IsNullOrEmpty(domain.Url))
+                        // {
+                        //    throw new InvalidOperationException("Please enter a valid domain.");
+                        // }
 
-                        _lib?.AddDomain(domain);
+                        // _lib?.AddDomain(domain);
 
                         break;
                      case "list":
-                        if (_lib != null)
-                        {
-                           var domains = _lib.GetDomains() ?? new List<Domain>();
-                           if (domains?.Count() > 0)
-                           {
-                              foreach (var dom in domains)
-                              {
-                                 Console.Write($"{dom.Id}. {dom.Url}\n");
-                              }
-                           }
-                           else
-                           {
-                              Console.WriteLine("No domains found in database.");
-                           }
-                        }
+                        // if (_lib != null)
+                        // {
+                        //    var domains = _lib.GetDomains() ?? new List<Domain>();
+                        //    if (domains?.Count() > 0)
+                        //    {
+                        //       foreach (var dom in domains)
+                        //       {
+                        //          Console.Write($"{dom.Id}. {dom.Url}\n");
+                        //       }
+                        //    }
+                        //    else
+                        //    {
+                        //       Console.WriteLine("No domains found in database.");
+                        //    }
+                        // }
                         break;
                      case "remove":
                         Console.Write("Please enter the domain id: ");
@@ -162,35 +161,39 @@ namespace PassLock
                   switch (args[1])
                   {
                      case "add":
-                        var account = new Account();
+                        // var account = new Account();
 
-                        Console.Write("Enter email: ");
-                        account.Email = Console.ReadLine();
-                        if (string.IsNullOrEmpty(account.Email))
-                        {
-                           Console.Write("Enter username: ");
-                           account.UserName = Console.ReadLine();
-                        }
+                        // Console.Write("Enter email: ");
+                        // account.Email = Console.ReadLine();
+                        // if (string.IsNullOrEmpty(account.Email))
+                        // {
+                        //    Console.Write("Enter username: ");
+                        //    account.UserName = Console.ReadLine();
+                        // }
 
-                        _lib?.AddAccount(account);
+                        // _lib?.AddAccount(account);
 
                         break;
                      case "list":
-                        if (_lib != null)
-                        {
-                           var accounts = _lib.GetAccounts() ?? new List<Account>();
-                           if (accounts?.Count() > 0)
-                           {
-                              foreach (var acct in accounts)
-                              {
-                                 Console.Write($"{acct.Id}. {acct.Email}\n");
-                              }
-                           }
-                           else
-                           {
-                              Console.WriteLine("No accounts found in database.");
-                           }
-                        }
+                        // Get Accounts
+                        var accounts = _lib?.GetAccounts() ?? new List<Account>();
+                        // Execute Command
+                        CommandDispatch.Execute(new AccountListCommand(accounts));
+                        // if (_lib != null)
+                        // {
+                        //    var accounts = _lib.GetAccounts() ?? new List<Account>();
+                        //    if (accounts?.Count() > 0)
+                        //    {
+                        //       foreach (var acct in accounts)
+                        //       {
+                        //          Console.Write($"{acct.Id}. {acct.Email}\n");
+                        //       }
+                        //    }
+                        //    else
+                        //    {
+                        //       Console.WriteLine("No accounts found in database.");
+                        //    }
+                        // }
                         break;
                      case "remove":
                         if (args.Length >= 3)

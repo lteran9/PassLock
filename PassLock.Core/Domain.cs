@@ -1,4 +1,6 @@
-namespace PassLock
+using System;
+
+namespace PassLock.Core
 {
    public class Domain
    {

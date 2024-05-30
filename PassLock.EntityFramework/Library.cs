@@ -1,7 +1,8 @@
 using System;
-using PassLock.DataAccess.Entities;
+using System.Collections.Generic;
+using PassLock.Core;
 
-namespace PassLock.DataAccess
+namespace PassLock.EntityFramework
 {
    /// <summary>
    /// This class handles all CRUD operations for database entities.
@@ -10,7 +11,7 @@ namespace PassLock.DataAccess
    {
       #region Accounts 
 
-      internal void AddAccount(Account acc)
+      public void AddAccount(Account acc)
       {
          using (var db = new PDatabaseContext())
          {
@@ -23,7 +24,7 @@ namespace PassLock.DataAccess
          }
       }
 
-      internal void RemoveAccount(int id = 0, string email = "", string username = "")
+      public void RemoveAccount(int id = 0, string email = "", string username = "")
       {
          Account? account = null;
 
@@ -51,24 +52,24 @@ namespace PassLock.DataAccess
          }
       }
 
-      internal IEnumerable<Account>? GetAccounts(int id = 0, string email = "", string username = "")
+      public List<Account>? GetAccounts(int id = 0, string email = "", string username = "")
       {
          using (var db = new PDatabaseContext())
          {
             if (id > 0)
             {
-               return db.Accounts.Where(x => x.Id == id);
+               return db.Accounts.Where(x => x.Id == id).ToList();
             }
             else if (!string.IsNullOrEmpty(email))
             {
-               return db.Accounts.Where(x => x.Email == email);
+               return db.Accounts.Where(x => x.Email == email).ToList();
             }
             else if (!string.IsNullOrEmpty(username))
             {
-               return db.Accounts.Where(x => x.UserName == username);
+               return db.Accounts.Where(x => x.UserName == username).ToList();
             }
 
-            return db.Accounts;
+            return db.Accounts.ToList();
          }
       }
 
@@ -76,7 +77,7 @@ namespace PassLock.DataAccess
 
       #region Domains 
 
-      internal void AddDomain(Domain dom)
+      public void AddDomain(Domain dom)
       {
          if (!string.IsNullOrEmpty(dom?.Url))
          {
@@ -88,7 +89,7 @@ namespace PassLock.DataAccess
          }
       }
 
-      internal void RemoveDomain(int id = 0)
+      public void RemoveDomain(int id = 0)
       {
          if (id > 0)
          {
@@ -102,13 +103,13 @@ namespace PassLock.DataAccess
          }
       }
 
-      internal IEnumerable<Domain>? GetDomains(int id = 0)
+      public List<Domain>? GetDomains(int id = 0)
       {
          using (var db = new PDatabaseContext())
          {
             if (id > 0)
             {
-               return db.Domains.Where(x => x.Id == id);
+               return db.Domains.Where(x => x.Id == id).ToList();
             }
 
             return db.Domains.ToList();
@@ -119,7 +120,7 @@ namespace PassLock.DataAccess
 
       #region Passwords 
 
-      internal int AddPassword(Password pwd)
+      public int AddPassword(Password pwd)
       {
          if (pwd != null)
          {
@@ -134,7 +135,7 @@ namespace PassLock.DataAccess
          return -1;
       }
 
-      internal Password? GetPassword(int accountId, int domainId)
+      public Password? GetPassword(int accountId, int domainId)
       {
          if (accountId > 0 && domainId > 0)
          {
@@ -155,7 +156,7 @@ namespace PassLock.DataAccess
       }
 
 #pragma warning disable CS8625
-      internal void AddAccountPassword(int accountId, int domainId, int passwordId)
+      public void AddAccountPassword(int accountId, int domainId, int passwordId)
       {
          if (accountId > 0 && domainId > 0 && passwordId > 0)
          {
@@ -168,9 +169,9 @@ namespace PassLock.DataAccess
                      DomainId = domainId,
                      PasswordId = passwordId,
                      // Explicitly remove default objects to prevent creation of new account, password, and domain
-                     Account = null,
-                     Password = null,
-                     Domain = null
+                     // Account = null,
+                     // Password = null,
+                     // Domain = null
                   }
                );
                db.SaveChanges();
