@@ -2,11 +2,15 @@ using System;
 
 namespace PassLock.Commands
 {
-   public static class CommandDispatch
+   /// <summary>
+   /// Generic class to execute commands.
+   /// </summary>
+   /// <typeparam name="TCommand"></typeparam>
+   public static class CommandDispatch<TCommand> where TCommand : ICommand<bool>
    {
-      public static bool Execute(AccountListCommand command)
+      public static bool Execute<THandler>(TCommand command) where THandler : BaseCommandHandler<TCommand, bool>, new()
       {
-         return new AccountListHandler().Execute(command);
+         return new THandler().Execute(command);
       }
    }
 }

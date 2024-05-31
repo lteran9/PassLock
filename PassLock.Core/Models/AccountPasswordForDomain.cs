@@ -8,7 +8,7 @@ namespace PassLock.Core
       public int DomainId { get; set; }
       public int PasswordId { get; set; }
 
-      //public virtual Account Account { get; set; }
+      // public virtual Account Account { get; set; }
       // public virtual Domain Domain { get; set; }
       // public virtual Password Password { get; set; }
 

@@ -5,11 +5,11 @@ namespace PassLock.Commands
 {
    public class AccountListCommand : ICommand<bool>
    {
-      public List<Account> Accounts { get; private set; }
+      public IDatabaseModel<Account> AccountDatabase { get; private set; }
 
-      public AccountListCommand(List<Account> accounts)
+      public AccountListCommand(IDatabaseModel<Account> repo)
       {
-         Accounts = accounts;
+         AccountDatabase = repo;
       }
    }
 
@@ -17,13 +17,26 @@ namespace PassLock.Commands
    {
       internal override bool ExecuteCommand(AccountListCommand command)
       {
-         if (command.Accounts?.Any() == true)
+         try
          {
-            Console.WriteLine("Accounts:");
-            foreach (var acct in command.Accounts)
+            var accounts = command.AccountDatabase.GetAll();
+
+            if (accounts?.Any() == true)
             {
-               Console.WriteLine($"\t{acct.Id}. {acct.Email}");
+               Console.WriteLine("Accounts:");
+               foreach (var acct in accounts)
+               {
+                  Console.WriteLine($"\t{acct.Id}. {acct.Email}");
+               }
             }
+            else
+            {
+               Console.WriteLine("No Accounts found in database.");
+            }
+         }
+         catch (Exception ex)
+         {
+            Console.WriteLine(ex.Message);
          }
 
          return false;
