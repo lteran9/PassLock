@@ -1,9 +1,6 @@
 ﻿using System;
-using Microsoft.Extensions.Configuration;
-using PassLock.InputReader;
 using PassLock.EntityFramework;
 using PassLock.Commands;
-using PassLock.Core;
 
 namespace PassLock
 {
@@ -12,28 +9,21 @@ namespace PassLock
    /// </summary>
    public class Program
    {
-      private static IConfiguration? _config;
-      private static Library? _lib;
+      /// <summary>
+      /// CRUD operations for the <c>Account</c> model.
+      /// </summary>
+      /// <returns></returns>
+      private static AccountDatabaseModel dbAccount = new AccountDatabaseModel();
 
       static void Main(string[] args)
       {
-         // Add appsettings.json file to Program
-         var builder =
-            new ConfigurationBuilder()
-               .AddJsonFile("appsettings.json", true, true);
-
          try
          {
-            // Create database context
-            _lib = new Library();
-            // Get configuration settings
-            _config = builder.Build();
-
             ProcessInput(args);
          }
          catch (Exception ex)
          {
-            Log.Error(ex);
+            Log.Error(ex.Message);
          }
       }
 
@@ -42,7 +32,7 @@ namespace PassLock
          if (args.Length == 0)
          {
             // Display --help information
-            PassLock.InputReader.Commands.Help();
+            InputReader.Commands.Help();
          }
          else
          {
@@ -111,7 +101,7 @@ namespace PassLock
                      }
                   }
                   break;
-               case "domain": //  add, list, remove
+               case "domain": //  add, list, remove operations
                   switch (args[1])
                   {
                      case "add":
@@ -148,7 +138,7 @@ namespace PassLock
                         var input = Console.ReadLine();
                         int.TryParse(input, out int domainId);
 
-                        _lib?.RemoveDomain(domainId);
+                        //_lib?.RemoveDomain(domainId);
 
                         break;
                      default:
@@ -156,59 +146,32 @@ namespace PassLock
                         break;
                   }
                   break;
-               case "account": // add, list, remove
-                  // 
+               case "account": // add, list, remove operations
                   switch (args[1])
                   {
                      case "add":
-                        // var account = new Account();
-
-                        // Console.Write("Enter email: ");
-                        // account.Email = Console.ReadLine();
-                        // if (string.IsNullOrEmpty(account.Email))
-                        // {
-                        //    Console.Write("Enter username: ");
-                        //    account.UserName = Console.ReadLine();
-                        // }
-
-                        // _lib?.AddAccount(account);
-
+                        CommandDispatch<AccountAddCommand>.Execute<AccountAddHandler>(new AccountAddCommand(dbAccount));
                         break;
                      case "list":
-                        // Get Accounts
-                        var accounts = _lib?.GetAccounts() ?? new List<Account>();
-                        // Execute Command
-                        CommandDispatch.Execute(new AccountListCommand(accounts));
-                        // if (_lib != null)
-                        // {
-                        //    var accounts = _lib.GetAccounts() ?? new List<Account>();
-                        //    if (accounts?.Count() > 0)
-                        //    {
-                        //       foreach (var acct in accounts)
-                        //       {
-                        //          Console.Write($"{acct.Id}. {acct.Email}\n");
-                        //       }
-                        //    }
-                        //    else
-                        //    {
-                        //       Console.WriteLine("No accounts found in database.");
-                        //    }
-                        // }
+                        CommandDispatch<AccountListCommand>.Execute<AccountListHandler>(new AccountListCommand(dbAccount));
                         break;
                      case "remove":
                         if (args.Length >= 3)
                         {
                            if (int.TryParse(args[2], out int id))
                            {
-                              _lib?.RemoveAccount(id: id);
+                              // Remove by id
+                              CommandDispatch<AccountRemoveCommand>.Execute<AccountRemoveHandler>(new AccountRemoveCommand(dbAccount, id: id));
                            }
                            else if (args[2]?.Contains("@") == true)
                            {
-                              _lib?.RemoveAccount(email: args[2]);
+                              // Remove by email
+                              CommandDispatch<AccountRemoveCommand>.Execute<AccountRemoveHandler>(new AccountRemoveCommand(dbAccount, email: args[2]));
                            }
                            else
                            {
-                              _lib?.RemoveAccount(username: args[2]);
+                              // Remove by username
+                              CommandDispatch<AccountRemoveCommand>.Execute<AccountRemoveHandler>(new AccountRemoveCommand(dbAccount, username: args[2]));
                            }
                         }
                         else

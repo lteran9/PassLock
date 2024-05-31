@@ -17,7 +17,6 @@ namespace PassLock.InputReader
          message.Append("Usage: passlock [operation] [arguments]...\n\n");
          message.Append("Manage your passwords directly from the command line.\n\n");
          message.Append("runtime-options:\n\n");
-
          message.Append("arguments:\n\n");
 
          Console.WriteLine(message);
