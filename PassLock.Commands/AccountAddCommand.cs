@@ -1,22 +1,18 @@
 using System;
 using PassLock.Core;
-using PassLock.Commands;
 
 namespace PassLock.Commands
 {
    public class AccountAddCommand : ICommand<bool>
    {
-      public IDatabaseModel<Account> AccountDatabase { get; private set; }
+      private readonly IDatabaseModel<Account> AccountDatabase;
 
       public AccountAddCommand(IDatabaseModel<Account> repo)
       {
          AccountDatabase = repo;
       }
-   }
 
-   public class AccountAddHandler : BaseCommandHandler<AccountAddCommand, bool>
-   {
-      internal override bool ExecuteCommand(AccountAddCommand command)
+      public bool Execute()
       {
          try
          {
@@ -27,7 +23,7 @@ namespace PassLock.Commands
             var username = Console.ReadLine();
             var account = new Account() { Email = email, UserName = username };
             // Insert to database
-            command.AccountDatabase.Insert(account);
+            AccountDatabase.Insert(account);
 
             return true;
          }

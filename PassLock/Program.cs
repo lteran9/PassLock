@@ -13,7 +13,12 @@ namespace PassLock
       /// CRUD operations for the <c>Account</c> model.
       /// </summary>
       /// <returns></returns>
-      private static AccountDatabaseModel dbAccount = new AccountDatabaseModel();
+      private static readonly AccountDatabaseModel dbAccount = new AccountDatabaseModel();
+      /// <summary>
+      /// CRUD operations for the <c>Domain</c> model.
+      /// </summary>
+      /// <returns></returns>
+      private static readonly DomainDatabaseModel dbDomain = new DomainDatabaseModel();
 
       static void Main(string[] args)
       {
@@ -105,41 +110,23 @@ namespace PassLock
                   switch (args[1])
                   {
                      case "add":
-                        // var domain = new Domain();
-                        // Console.Write("Enter domain: ");
-                        // domain.Url = Console.ReadLine() ?? string.Empty;
-                        // if (string.IsNullOrEmpty(domain.Url))
-                        // {
-                        //    throw new InvalidOperationException("Please enter a valid domain.");
-                        // }
-
-                        // _lib?.AddDomain(domain);
-
+                        CommandDispatch.Execute(new DomainAddCommand(dbDomain));
                         break;
                      case "list":
-                        // if (_lib != null)
-                        // {
-                        //    var domains = _lib.GetDomains() ?? new List<Domain>();
-                        //    if (domains?.Count() > 0)
-                        //    {
-                        //       foreach (var dom in domains)
-                        //       {
-                        //          Console.Write($"{dom.Id}. {dom.Url}\n");
-                        //       }
-                        //    }
-                        //    else
-                        //    {
-                        //       Console.WriteLine("No domains found in database.");
-                        //    }
-                        // }
+                        CommandDispatch.Execute(new DomainListCommand(dbDomain));
                         break;
                      case "remove":
-                        Console.Write("Please enter the domain id: ");
-                        var input = Console.ReadLine();
-                        int.TryParse(input, out int domainId);
-
-                        //_lib?.RemoveDomain(domainId);
-
+                        if (args.Length >= 3)
+                        {
+                           if (int.TryParse(args[2], out int id))
+                           {
+                              CommandDispatch.Execute(new DomainRemoveCommand(dbDomain, id: id));
+                           }
+                        }
+                        else
+                        {
+                           Log.Error("Please enter an domain identifier.");
+                        }
                         break;
                      default:
                         Log.Error("Unable to determine `domain` operation.");
@@ -150,10 +137,10 @@ namespace PassLock
                   switch (args[1])
                   {
                      case "add":
-                        CommandDispatch<AccountAddCommand>.Execute<AccountAddHandler>(new AccountAddCommand(dbAccount));
+                        CommandDispatch.Execute(new AccountAddCommand(dbAccount));
                         break;
                      case "list":
-                        CommandDispatch<AccountListCommand>.Execute<AccountListHandler>(new AccountListCommand(dbAccount));
+                        CommandDispatch.Execute(new AccountListCommand(dbAccount));
                         break;
                      case "remove":
                         if (args.Length >= 3)
@@ -161,17 +148,17 @@ namespace PassLock
                            if (int.TryParse(args[2], out int id))
                            {
                               // Remove by id
-                              CommandDispatch<AccountRemoveCommand>.Execute<AccountRemoveHandler>(new AccountRemoveCommand(dbAccount, id: id));
+                              CommandDispatch.Execute(new AccountRemoveCommand(dbAccount, id: id));
                            }
                            else if (args[2]?.Contains("@") == true)
                            {
                               // Remove by email
-                              CommandDispatch<AccountRemoveCommand>.Execute<AccountRemoveHandler>(new AccountRemoveCommand(dbAccount, email: args[2]));
+                              CommandDispatch.Execute(new AccountRemoveCommand(dbAccount, email: args[2]));
                            }
                            else
                            {
                               // Remove by username
-                              CommandDispatch<AccountRemoveCommand>.Execute<AccountRemoveHandler>(new AccountRemoveCommand(dbAccount, username: args[2]));
+                              CommandDispatch.Execute(new AccountRemoveCommand(dbAccount, username: args[2]));
                            }
                         }
                         else

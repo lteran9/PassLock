@@ -8,27 +8,45 @@ namespace PassLock.EntityFramework
    {
       public List<Domain> GetAll()
       {
-         throw new NotImplementedException();
+         using (var db = new PDatabaseContext())
+         {
+            return db.Domains.ToList();
+         }
       }
 
       public Domain GetById(int id)
       {
-         throw new NotImplementedException();
+         using (var db = new PDatabaseContext())
+         {
+            return db.Domains.Where(x => x.Id == id).FirstOrDefault() ?? new Domain();
+         }
       }
 
       public void Insert(Domain model)
       {
-         throw new NotImplementedException();
+         using (var db = new PDatabaseContext())
+         {
+            db.Domains.Add(model);
+            db.SaveChanges();
+         }
       }
 
       public void Remove(Domain model)
       {
-         throw new NotImplementedException();
+         using (var db = new PDatabaseContext())
+         {
+            db.Domains.Remove(model);
+            db.SaveChanges();
+         }
       }
 
       public void Update(Domain model)
       {
-         throw new NotImplementedException();
+         using (var db = new PDatabaseContext())
+         {
+            db.Domains.Update(model);
+            db.SaveChanges();
+         }
       }
    }
 }

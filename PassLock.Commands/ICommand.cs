@@ -6,5 +6,8 @@ namespace PassLock.Commands
    /// Base interface for all commands.
    /// </summary>
    /// <typeparam name="TResponse"></typeparam>
-   public interface ICommand<out TResponse> { }
+   public interface ICommand<out TResponse>
+   {
+      TResponse Execute();
+   }
 }

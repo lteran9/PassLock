@@ -6,11 +6,11 @@ namespace PassLock.Commands
    /// Generic class to execute commands.
    /// </summary>
    /// <typeparam name="TCommand"></typeparam>
-   public static class CommandDispatch<TCommand> where TCommand : ICommand<bool>
+   public static class CommandDispatch
    {
-      public static bool Execute<THandler>(TCommand command) where THandler : BaseCommandHandler<TCommand, bool>, new()
+      public static bool Execute<TCommand>(TCommand command) where TCommand : ICommand<bool>
       {
-         return new THandler().Execute(command);
+         return command.Execute();
       }
    }
 }
