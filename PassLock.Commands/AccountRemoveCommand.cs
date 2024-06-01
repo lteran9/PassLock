@@ -9,7 +9,7 @@ namespace PassLock.Commands
       public string Email { get; private set; }
       public string UserName { get; private set; }
 
-      public IDatabaseModel<Account> AccountDatabase { get; private set; }
+      private readonly IDatabaseModel<Account> AccountDatabase;
 
       public AccountRemoveCommand(IDatabaseModel<Account> repo, int id = 0, string email = "", string username = "")
       {
@@ -18,38 +18,36 @@ namespace PassLock.Commands
          Email = email;
          UserName = username;
       }
-   }
 
-   public class AccountRemoveHandler : BaseCommandHandler<AccountRemoveCommand, bool>
-   {
-
-      internal override bool ExecuteCommand(AccountRemoveCommand command)
+      public bool Execute()
       {
          try
          {
             Account? account = null;
 
-            if (command.Id > 0)
+            if (Id > 0)
             {
-               account = command.AccountDatabase.GetById(command.Id);
+               account = AccountDatabase.GetById(Id);
             }
-            else if (!string.IsNullOrEmpty(command.Email))
+            else if (!string.IsNullOrEmpty(Email))
             {
                // Need to find a better way to get the account by email
-               var allAccounts = command.AccountDatabase.GetAll();
-               account = allAccounts.FirstOrDefault(a => a.Email == command.Email);
+               var allAccounts = AccountDatabase.GetAll();
+               account = allAccounts.FirstOrDefault(a => a.Email == Email);
             }
-            else if (!string.IsNullOrEmpty(command.UserName))
+            else if (!string.IsNullOrEmpty(UserName))
             {
                // Need to find a better way to get the account by username
-               var allAccounts = command.AccountDatabase.GetAll();
-               account = allAccounts.FirstOrDefault(a => a.UserName == command.UserName);
+               var allAccounts = AccountDatabase.GetAll();
+               account = allAccounts.FirstOrDefault(a => a.UserName == UserName);
             }
 
             if (account != null)
             {
-               command.AccountDatabase.Remove(account);
+               AccountDatabase.Remove(account);
             }
+
+            return true;
          }
          catch (Exception ex)
          {

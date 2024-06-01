@@ -4,47 +4,47 @@ using PassLock.Core;
 
 namespace PassLock.EntityFramework
 {
-   public class DomainDatabaseModel : IDatabaseModel<Domain>
+   public class PasswordDatabaseModel : IDatabaseModel<Password>
    {
-      public List<Domain> GetAll()
+      public List<Password> GetAll()
       {
          using (var db = new PDatabaseContext())
          {
-            return db.Domains.ToList();
+            return db.Passwords.ToList();
          }
       }
 
-      public Domain GetById(int id)
+      public Password GetById(int id)
       {
          using (var db = new PDatabaseContext())
          {
-            return db.Domains.Where(x => x.Id == id).FirstOrDefault() ?? new Domain();
+            return db.Passwords.Where(x => x.Id == id).FirstOrDefault() ?? new Password();
          }
       }
 
-      public void Insert(Domain model)
+      public void Insert(Password model)
       {
          using (var db = new PDatabaseContext())
          {
-            db.Domains.Add(model);
+            db.Passwords.Add(model);
             db.SaveChanges();
          }
       }
 
-      public void Remove(Domain model)
+      public void Remove(Password model)
       {
          using (var db = new PDatabaseContext())
          {
-            db.Domains.Remove(model);
+            db.Passwords.Remove(model);
             db.SaveChanges();
          }
       }
 
-      public void Update(Domain model)
+      public void Update(Password model)
       {
          using (var db = new PDatabaseContext())
          {
-            db.Domains.Update(model);
+            db.Passwords.Update(model);
             db.SaveChanges();
          }
       }
