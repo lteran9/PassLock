@@ -37,6 +37,9 @@ namespace PassLock.EntityFramework.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
                     b.ToTable("Accounts");
                 });
 

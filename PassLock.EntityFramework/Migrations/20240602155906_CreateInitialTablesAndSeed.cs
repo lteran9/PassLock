@@ -73,6 +73,12 @@ namespace PassLock.EntityFramework.Migrations
                 {
                     table.PrimaryKey("PK_Passwords", x => x.Id);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Accounts_Email",
+                table: "Accounts",
+                column: "Email",
+                unique: true);
         }
 
         /// <inheritdoc />
