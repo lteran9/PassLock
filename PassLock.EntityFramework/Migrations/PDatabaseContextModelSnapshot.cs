@@ -83,6 +83,9 @@ namespace PassLock.EntityFramework.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Url")
+                        .IsUnique();
+
                     b.ToTable("Domains");
                 });
 

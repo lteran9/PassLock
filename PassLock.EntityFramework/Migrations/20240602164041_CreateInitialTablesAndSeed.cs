@@ -79,6 +79,12 @@ namespace PassLock.EntityFramework.Migrations
                 table: "Accounts",
                 column: "Email",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Domains_Url",
+                table: "Domains",
+                column: "Url",
+                unique: true);
         }
 
         /// <inheritdoc />

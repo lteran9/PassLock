@@ -11,7 +11,7 @@ using PassLock.EntityFramework;
 namespace PassLock.EntityFramework.Migrations
 {
     [DbContext(typeof(PDatabaseContext))]
-    [Migration("20240602155906_CreateInitialTablesAndSeed")]
+    [Migration("20240602164041_CreateInitialTablesAndSeed")]
     partial class CreateInitialTablesAndSeed
     {
         /// <inheritdoc />
@@ -85,6 +85,9 @@ namespace PassLock.EntityFramework.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Url")
+                        .IsUnique();
 
                     b.ToTable("Domains");
                 });
