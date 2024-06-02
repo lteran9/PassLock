@@ -25,6 +25,9 @@ namespace PassLock.EntityFramework
          base.OnModelCreating(builder);
          builder.Entity<AccountPasswordForDomain>()
             .HasKey(x => new { x.AccountId, x.PasswordId, x.DomainId });
+         builder.Entity<Account>()
+            .HasIndex(x => x.Email)
+            .IsUnique();
 
       }
 
