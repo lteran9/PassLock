@@ -28,7 +28,9 @@ namespace PassLock.EntityFramework
          builder.Entity<Account>()
             .HasIndex(x => x.Email)
             .IsUnique();
-
+         builder.Entity<Domain>()
+            .HasIndex(x => x.Url)
+            .IsUnique();
       }
 
       // The following configures EF to create a Sqlite database file in the
