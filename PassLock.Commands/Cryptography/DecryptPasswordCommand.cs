@@ -5,20 +5,20 @@ namespace PassLock.Commands
 {
    public class DecryptPassword : ICommand<string>
    {
-      private readonly Password Password;
+      private readonly Password _password;
 
       public DecryptPassword(Password encrypted)
       {
-         Password = encrypted;
+         _password = encrypted;
       }
 
       public string Execute()
       {
          try
          {
-            if (Password.Id > 0)
+            if (_password.Id > 0)
             {
-               return Encryptor.Decrypt(Password.Value, Password.Key, Password.InitializationVector);
+               return Encryptor.Decrypt(_password.Value, _password.Key, _password.InitializationVector);
             }
          }
          catch (Exception ex)

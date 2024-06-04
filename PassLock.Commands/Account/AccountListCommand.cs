@@ -5,18 +5,18 @@ namespace PassLock.Commands
 {
    public class AccountListCommand : ICommand<bool>
    {
-      private readonly IDatabaseModel<Account> AccountDatabase;
+      private readonly IDatabaseModel<Account> _accountDatabase;
 
       public AccountListCommand(IDatabaseModel<Account> repo)
       {
-         AccountDatabase = repo;
+         _accountDatabase = repo;
       }
 
       public bool Execute()
       {
          try
          {
-            var accounts = AccountDatabase.GetAll();
+            var accounts = _accountDatabase.GetAll();
 
             if (accounts?.Any() == true)
             {

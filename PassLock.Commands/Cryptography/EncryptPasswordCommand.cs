@@ -5,18 +5,18 @@ namespace PassLock.Commands
 {
    public class EncryptPasswordCommand : ICommand<Password?>
    {
-      private readonly string Password;
+      private readonly string _password;
 
       public EncryptPasswordCommand(string decrypted)
       {
-         Password = decrypted;
+         _password = decrypted;
       }
 
       public Password? Execute()
       {
          try
          {
-            var encryptedPassword = Encryptor.Encrypt(Password, out string key, out string iv);
+            var encryptedPassword = Encryptor.Encrypt(_password, out string key, out string iv);
 
             return
                new Password()

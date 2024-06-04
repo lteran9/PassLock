@@ -1,6 +1,8 @@
 ﻿using System;
 using PassLock.EntityFramework;
 using PassLock.Commands;
+using PassLock.Core;
+using PassLock.InputReader;
 
 namespace PassLock
 {
@@ -9,6 +11,8 @@ namespace PassLock
    /// </summary>
    public class Program
    {
+      #region CRUD
+
       /// <summary>
       /// CRUD operations for the <c>Account</c> model.
       /// </summary>
@@ -19,6 +23,17 @@ namespace PassLock
       /// </summary>
       /// <returns></returns>
       private static readonly DomainDatabaseModel dbDomain = new DomainDatabaseModel();
+      /// <summary>
+      /// CRUD operations for the <c>Password</c> model.
+      /// </summary> 
+      private static readonly PasswordDatabaseModel dbPassword = new PasswordDatabaseModel();
+      /// <summary>
+      /// CRUD operations for <c>AccountPasswordForDomain</c> model.
+      /// </summary>
+      /// <returns></returns>
+      private static readonly AccountPasswordForDomainDatabaseModel dbAccountPasswordForDomain = new AccountPasswordForDomainDatabaseModel();
+
+      #endregion
 
       static void Main(string[] args)
       {
@@ -37,7 +52,7 @@ namespace PassLock
          if (args.Length == 0)
          {
             // Display --help information
-            InputReader.Commands.Help();
+            InputReaderCommands.Help();
          }
          else
          {
@@ -53,26 +68,27 @@ namespace PassLock
 
                      if (accountId > 0 && domainId > 0)
                      {
-                        Console.Write("Enter password: ");
-                        var password = Console.ReadLine() ?? string.Empty;
-                        // var encryptedPassword = Encryptor.Encrypt(password, out string key, out string iv);
-                        // var pwdId = _lib?.AddPassword(
-                        //    new Password()
-                        //    {
-                        //       Key = key,
-                        //       Value = encryptedPassword,
-                        //       InitializationVector = iv
-                        //    }
-                        // ) ?? 0;
-
-                        // if (pwdId > 0)
-                        // {
-                        //    _lib?.AddAccountPassword(accountId, domainId, pwdId);
-                        // }
-                        // else
-                        // {
-                        //    throw new Exception("Unable to save password to database.");
-                        // }
+                        var password = InputReaderCommands.ReadPassword.Execute();
+                        var encryptedPassword = CommandDispatch.Execute(new EncryptPasswordCommand(password));
+                        if (encryptedPassword != null)
+                        {
+                           CommandDispatch.Execute(new PasswordAddCommand(dbPassword, encryptedPassword));
+                           if (encryptedPassword.Id > 0)
+                           {
+                              var dbModel =
+                                 new AccountPasswordForDomain()
+                                 {
+                                    AccountId = accountId,
+                                    DomainId = domainId,
+                                    PasswordId = encryptedPassword.Id
+                                 };
+                              CommandDispatch.Execute(new AccountPasswordForDomainAddCommand(dbAccountPasswordForDomain, dbModel));
+                           }
+                           else
+                           {
+                              Log.Error("Unable to save password to database.");
+                           }
+                        }
                      }
                      else
                      {

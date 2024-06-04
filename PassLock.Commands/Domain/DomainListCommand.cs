@@ -5,18 +5,18 @@ namespace PassLock.Commands
 {
    public class DomainListCommand : ICommand<bool>
    {
-      private readonly IDatabaseModel<Domain> DomainDatabase;
+      private readonly IDatabaseModel<Domain> _domainDatabase;
 
       public DomainListCommand(IDatabaseModel<Domain> repo)
       {
-         DomainDatabase = repo;
+         _domainDatabase = repo;
       }
 
       public bool Execute()
       {
          try
          {
-            var Domains = DomainDatabase.GetAll();
+            var Domains = _domainDatabase.GetAll();
 
             if (Domains?.Any() == true)
             {

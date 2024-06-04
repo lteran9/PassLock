@@ -7,11 +7,11 @@ namespace PassLock.Commands
    {
       public int Id { get; private set; }
 
-      private readonly IDatabaseModel<Domain> DomainDatabase;
+      private readonly IDatabaseModel<Domain> _domainDatabase;
 
       public DomainRemoveCommand(IDatabaseModel<Domain> repo, int id = 0)
       {
-         DomainDatabase = repo;
+         _domainDatabase = repo;
          Id = id;
       }
 
@@ -23,12 +23,12 @@ namespace PassLock.Commands
 
             if (Id > 0)
             {
-               account = DomainDatabase.GetById(Id);
+               account = _domainDatabase.GetById(Id);
             }
 
             if (account != null)
             {
-               DomainDatabase.Remove(account);
+               _domainDatabase.Remove(account);
             }
 
             return true;

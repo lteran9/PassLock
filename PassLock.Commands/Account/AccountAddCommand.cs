@@ -5,11 +5,11 @@ namespace PassLock.Commands
 {
    public class AccountAddCommand : ICommand<bool>
    {
-      private readonly IDatabaseModel<Account> AccountDatabase;
+      private readonly IDatabaseModel<Account> _accountDatabase;
 
       public AccountAddCommand(IDatabaseModel<Account> repo)
       {
-         AccountDatabase = repo;
+         _accountDatabase = repo;
       }
 
       public bool Execute()
@@ -23,7 +23,7 @@ namespace PassLock.Commands
             var username = Console.ReadLine();
             var account = new Account() { Email = email, UserName = username };
             // Insert to database
-            AccountDatabase.Insert(account);
+            _accountDatabase.Insert(account);
 
             return true;
          }
