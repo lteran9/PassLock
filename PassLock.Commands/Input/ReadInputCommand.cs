@@ -1,30 +1,36 @@
-using System;
 using System.Text;
 
-namespace PassLock.InputReader
+namespace PassLock.Commands
 {
-   /// <summary>
-   /// This class will handle callbacks for various operations cli operations. 
-   /// </summary>
-   public static class Commands
+   public class ReadInputCommand : ICommand<string>
    {
-      /// <summary>
-      /// -h, --help
-      /// </summary>
-      public static void Help()
-      {
-         var message = new StringBuilder();
-         message.Append("Usage: passlock [operation] [arguments]...\n\n");
-         message.Append("Manage your passwords directly from the command line.\n\n");
-         message.Append("runtime-options:\n\n");
-         message.Append("arguments:\n\n");
+      private readonly string _prompt;
 
-         Console.WriteLine(message);
+      public ReadInputCommand(string prompt)
+      {
+         _prompt = prompt;
       }
 
-      public static string ReadPrivateString()
+      public string Execute()
+      {
+         try
+         {
+            Console.Write(_prompt);
+
+            return ReadPrivateString();
+         }
+         catch (Exception ex)
+         {
+            Console.WriteLine(ex.Message);
+         }
+
+         return string.Empty;
+      }
+
+      public string ReadPrivateString()
       {
          var result = new StringBuilder();
+
          while (true)
          {
             ConsoleKeyInfo key = Console.ReadKey(true);

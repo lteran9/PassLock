@@ -13,6 +13,8 @@ Program.cs file provides a high-level view of the operations supported by the pa
 
 ### Accounts
 
+### Domains
+
 ### Passwords
 
 ## Encryption

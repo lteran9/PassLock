@@ -5,11 +5,11 @@ namespace PassLock.Commands
 {
    public class DomainAddCommand : ICommand<bool>
    {
-      private readonly IDatabaseModel<Domain> DomainDatabase;
+      private readonly IDatabaseModel<Domain> _domainDatabase;
 
       public DomainAddCommand(IDatabaseModel<Domain> repo)
       {
-         DomainDatabase = repo;
+         _domainDatabase = repo;
       }
 
       public bool Execute()
@@ -22,7 +22,7 @@ namespace PassLock.Commands
             if (!string.IsNullOrEmpty(domain))
             {
                // Insert to database
-               DomainDatabase.Insert(new Domain() { Url = domain });
+               _domainDatabase.Insert(new Domain() { Url = domain });
 
                return true;
             }
