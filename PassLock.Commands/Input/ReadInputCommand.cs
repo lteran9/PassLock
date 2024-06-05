@@ -17,7 +17,7 @@ namespace PassLock.Commands
          {
             Console.Write(_prompt);
 
-            return ReadPrivateString();
+            return Console.ReadLine() ?? string.Empty;
          }
          catch (Exception ex)
          {
@@ -25,35 +25,6 @@ namespace PassLock.Commands
          }
 
          return string.Empty;
-      }
-
-      public string ReadPrivateString()
-      {
-         var result = new StringBuilder();
-
-         while (true)
-         {
-            ConsoleKeyInfo key = Console.ReadKey(true);
-
-            switch (key.Key)
-            {
-               case ConsoleKey.Enter:
-                  return result.ToString();
-               case ConsoleKey.Backspace:
-                  if (result.Length == 0)
-                  {
-                     continue;
-                  }
-
-                  result.Length--;
-                  Console.Write("\b \b");
-                  continue;
-               default:
-                  result.Append(key.KeyChar);
-                  Console.Write("*");
-                  continue;
-            }
-         }
       }
    }
 }

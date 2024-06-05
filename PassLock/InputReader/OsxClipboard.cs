@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 namespace PassLock.InputReader
 {
    /// <summary>
-   /// This class is used to set the clipboard text on Mac OS. We do not want to output plaintext password
+   /// This class is used to set the clipboard text on Mac OS. We do not want to output plaintext passwords
    /// to the command line so instead we copy them to the clipboard.
    /// </summary>
    static class OsxClipboard

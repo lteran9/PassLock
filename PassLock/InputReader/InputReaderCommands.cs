@@ -1,6 +1,5 @@
 using System;
 using System.Text;
-using System.Windows.Input;
 using PassLock.Commands;
 
 namespace PassLock.InputReader
@@ -10,11 +9,25 @@ namespace PassLock.InputReader
    /// </summary>
    public static class InputReaderCommands
    {
+      public static ICommand<string> ReadEmail
+      {
+         get
+         {
+            return new ReadInputCommand("Please enter email: ");
+         }
+      }
+      public static ICommand<string> ReadUserName
+      {
+         get
+         {
+            return new ReadInputCommand("Please enter user name: ");
+         }
+      }
       public static ICommand<string> ReadPassword
       {
          get
          {
-            return new ReadInputCommand("Enter password: ");
+            return new ReadPrivateInputCommand("Enter password: ");
          }
       }
 

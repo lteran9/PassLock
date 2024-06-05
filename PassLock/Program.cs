@@ -153,7 +153,10 @@ namespace PassLock
                   switch (args[1])
                   {
                      case "add":
-                        CommandDispatch.Execute(new AccountAddCommand(dbAccount));
+                        string email = InputReaderCommands.ReadEmail.Execute();
+                        string userName = InputReaderCommands.ReadUserName.Execute();
+
+                        CommandDispatch.Execute(new AccountAddCommand(dbAccount, email, userName));
                         break;
                      case "list":
                         CommandDispatch.Execute(new AccountListCommand(dbAccount));

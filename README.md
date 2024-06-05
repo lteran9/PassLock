@@ -13,10 +13,18 @@ Program.cs file provides a high-level view of the operations supported by the pa
 
 ### Accounts
 
+Representation of the email you use to sign in to a domain.
+
 ### Domains
+
+Website or application that requires an account.
 
 ### Passwords
 
+The actual password for the account and domain encrypted using AES.
+
 ## Encryption
+
+
 
 ## Decryption
