@@ -23,7 +23,7 @@ namespace PassLock.EntityFramework.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AccountDomainPasswords", x => new { x.AccountId, x.PasswordId, x.DomainId });
+                    table.PrimaryKey("PK_AccountDomainPasswords", x => new { x.AccountId, x.DomainId });
                 });
 
             migrationBuilder.CreateTable(
@@ -73,6 +73,12 @@ namespace PassLock.EntityFramework.Migrations
                 {
                     table.PrimaryKey("PK_Passwords", x => x.Id);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AccountDomainPasswords_PasswordId",
+                table: "AccountDomainPasswords",
+                column: "PasswordId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Accounts_Email",

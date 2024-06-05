@@ -48,19 +48,22 @@ namespace PassLock.EntityFramework.Migrations
                     b.Property<int>("AccountId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("PasswordId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("DomainId")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("PasswordId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("AccountId", "PasswordId", "DomainId");
+                    b.HasKey("AccountId", "DomainId");
+
+                    b.HasIndex("PasswordId")
+                        .IsUnique();
 
                     b.ToTable("AccountDomainPasswords");
                 });
