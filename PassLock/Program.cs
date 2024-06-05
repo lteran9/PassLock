@@ -109,6 +109,10 @@ namespace PassLock
 
                      if (accountId > 0 && domainId > 0)
                      {
+                        var passwordId = CommandDispatch.Execute(new AccountPasswordForDomainGetCommand(dbAccountPasswordForDomain, accountId, domainId))?.PasswordId;
+                        var password = CommandDispatch.Execute(new PasswordGetCommand(dbPassword, passwordId ?? 0));
+                        var decryptedPassword = CommandDispatch.Execute(new PasswordDecryptCommand(password));
+                        Console.WriteLine(decryptedPassword ?? "N/A");
                         // var pwd = _lib?.GetPassword(accountId, domainId);
                         // if (!string.IsNullOrEmpty(pwd?.Value))
                         // {

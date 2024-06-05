@@ -7,7 +7,7 @@ namespace PassLock.Commands
       public void Insert(T model);
       public void Update(T model);
       public void Remove(T model);
-      public T GetById(int id);
+      public T GetById(T model);
       public List<T> GetAll();
    }
 }

@@ -14,11 +14,11 @@ namespace PassLock.EntityFramework
          }
       }
 
-      public Domain GetById(int id)
+      public Domain GetById(Domain model)
       {
          using (var db = new PDatabaseContext())
          {
-            return db.Domains.Where(x => x.Id == id).FirstOrDefault() ?? new Domain();
+            return db.Domains.Where(x => x.Id == model.Id).FirstOrDefault() ?? new Domain();
          }
       }
 
