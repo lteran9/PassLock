@@ -19,22 +19,17 @@ namespace PassLock.EntityFramework
       /// </summary>
       /// <param name="id"></param>
       /// <returns></returns>
-      public AccountPasswordForDomain GetById(int id)
-      {
-         throw new NotImplementedException();
-      }
-
-      public AccountPasswordForDomain GetById(int accountId, int passwordId, int domainId)
+      public AccountPasswordForDomain GetById(AccountPasswordForDomain model)
       {
          using (var db = new PDatabaseContext())
          {
             return db.AccountDomainPasswords
                .FirstOrDefault(x =>
-                  x.AccountId == accountId &&
-                  x.PasswordId == passwordId &&
-                  x.DomainId == domainId) ?? new AccountPasswordForDomain();
+                  x.AccountId == model.AccountId &&
+                  x.DomainId == model.DomainId) ?? new AccountPasswordForDomain();
          }
       }
+
 
       public void Insert(AccountPasswordForDomain model)
       {

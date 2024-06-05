@@ -14,11 +14,11 @@ namespace PassLock.EntityFramework
          }
       }
 
-      public Account GetById(int id)
+      public Account GetById(Account model)
       {
          using (var db = new PDatabaseContext())
          {
-            return db.Accounts.Where(x => x.Id == id).FirstOrDefault() ?? new Account();
+            return db.Accounts.Where(x => x.Id == model.Id).FirstOrDefault() ?? new Account();
          }
       }
 
