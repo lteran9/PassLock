@@ -112,17 +112,12 @@ namespace PassLock
                         var passwordId = CommandDispatch.Execute(new AccountPasswordForDomainGetCommand(dbAccountPasswordForDomain, accountId, domainId))?.PasswordId;
                         var password = CommandDispatch.Execute(new PasswordGetCommand(dbPassword, passwordId ?? 0));
                         var decryptedPassword = CommandDispatch.Execute(new PasswordDecryptCommand(password));
-                        Console.WriteLine(decryptedPassword ?? "N/A");
-                        // var pwd = _lib?.GetPassword(accountId, domainId);
-                        // if (!string.IsNullOrEmpty(pwd?.Value))
-                        // {
-                        //    OsxClipboard.SetText(Encryptor.Decrypt(pwd.Value, pwd.Key, pwd.InitializationVector));
-                        //    Log.Info("Value copied to clipboard.");
-                        // }
-                        // else
-                        // {
-                        //    Log.Error("Password value is empty.");
-                        // }
+
+                        if (!string.IsNullOrEmpty(decryptedPassword))
+                        {
+                           OsxClipboard.SetText(decryptedPassword);
+                           Log.Info("Password value copied to clipboard.");
+                        }
                      }
                   }
                   break;
