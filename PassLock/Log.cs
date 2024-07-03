@@ -2,7 +2,7 @@ using System;
 
 namespace PassLock
 {
-   public static class Log
+   public static class LogUtil
    {
       static string RED = Console.IsOutputRedirected ? "" : "\x1b[91m";
       static string NORMAL = Console.IsOutputRedirected ? "" : "\x1b[39m";
