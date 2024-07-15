@@ -2,10 +2,13 @@ using System;
 
 namespace PassLock
 {
-   public static class LogUtil
+   /// <summary>
+   /// Utility class to format messages displayed to the command line.
+   /// </summary>
+   public static class LogUtility
    {
-      static string RED = Console.IsOutputRedirected ? "" : "\x1b[91m";
-      static string NORMAL = Console.IsOutputRedirected ? "" : "\x1b[39m";
+      private static string RED = Console.IsOutputRedirected ? "" : "\x1b[91m";
+      private static string NORMAL = Console.IsOutputRedirected ? "" : "\x1b[39m";
 
       public static void Info(string message)
       {
@@ -20,6 +23,7 @@ namespace PassLock
       public static void Error(Exception ex)
       {
          Error(ex.Message);
+
          if (!string.IsNullOrEmpty(ex.InnerException?.Message))
          {
             Console.Write($"\t-{ex.InnerException.Message}\n");

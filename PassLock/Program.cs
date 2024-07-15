@@ -43,7 +43,7 @@ namespace PassLock
          }
          catch (Exception ex)
          {
-            LogUtil.Error(ex.Message);
+            LogUtility.Error(ex);
          }
       }
 
@@ -86,18 +86,18 @@ namespace PassLock
                            }
                            else
                            {
-                              LogUtil.Error("Unable to save password to database.");
+                              LogUtility.Error("Unable to save password to database.");
                            }
                         }
                      }
                      else
                      {
-                        LogUtil.Error("Invalid account or domain id.");
+                        LogUtility.Error("Invalid account or domain id.");
                      }
                   }
                   else
                   {
-                     LogUtil.Error("Missing arguments.");
+                     LogUtility.Error("Missing arguments.");
                   }
                   break;
                case "decrypt": // Run decrypt operation
@@ -117,7 +117,7 @@ namespace PassLock
                         if (!string.IsNullOrEmpty(decryptedPassword))
                         {
                            OsxClipboard.SetText(decryptedPassword);
-                           LogUtil.Info("Password value copied to clipboard.");
+                           LogUtility.Info("Password value copied to clipboard.");
                         }
                      }
                   }
@@ -141,11 +141,11 @@ namespace PassLock
                         }
                         else
                         {
-                           LogUtil.Error("Please enter an domain identifier.");
+                           LogUtility.Error("Please enter an domain identifier.");
                         }
                         break;
                      default:
-                        LogUtil.Error("Unable to determine `domain` operation.");
+                        LogUtility.Error("Unable to determine `domain` operation.");
                         break;
                   }
                   break;
@@ -182,16 +182,16 @@ namespace PassLock
                         }
                         else
                         {
-                           LogUtil.Error("Please enter an account identifier.");
+                           LogUtility.Error("Please enter an account identifier.");
                         }
                         break;
                      default:
-                        LogUtil.Error("Unable to determine `account` operation.");
+                        LogUtility.Error("Unable to determine `account` operation.");
                         break;
                   }
                   break;
                default:
-                  LogUtil.Error("Unable to identify operation.");
+                  LogUtility.Error("Unable to identify operation.");
                   break;
             }
          }
