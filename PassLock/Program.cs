@@ -97,7 +97,7 @@ namespace PassLock
                   }
                   else
                   {
-                     LogUtility.Error("Missing arguments.");
+                     LogUtility.Error("Missing arguments for encrypt operation.");
                   }
                   break;
                case "decrypt": // Run decrypt operation
@@ -121,8 +121,12 @@ namespace PassLock
                         }
                      }
                   }
+                  else
+                  {
+                     LogUtility.Error("Missing arguments for decrypt operation.");
+                  }
                   break;
-               case "domain": //  add, list, remove operations
+               case "domain": // Add, List, Remove Operations
                   switch (args[1])
                   {
                      case "add":
@@ -149,7 +153,7 @@ namespace PassLock
                         break;
                   }
                   break;
-               case "account": // add, list, remove operations
+               case "account": // Add, List, Remove Operations
                   switch (args[1])
                   {
                      case "add":
