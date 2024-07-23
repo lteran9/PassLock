@@ -14,12 +14,25 @@ namespace PassLock.Commands
 
       public string Execute()
       {
+         if (string.IsNullOrEmpty(_password.Value))
+         {
+            throw new ArgumentNullException($"{nameof(Password.Value)} property was not provided.");
+         }
+
+         if (string.IsNullOrEmpty(_password.Key))
+         {
+            throw new ArgumentNullException($"{nameof(Password.Key)} property was not provided.");
+         }
+
+         if (string.IsNullOrEmpty(_password.InitializationVector))
+         {
+            throw new ArgumentNullException($"{nameof(Password.InitializationVector)} property was not provided.");
+         }
+
          try
          {
-            if (_password.Id > 0)
-            {
-               return Encryptor.Decrypt(_password.Value, _password.Key, _password.InitializationVector);
-            }
+
+            return Encryptor.Decrypt(_password.Value, _password.Key, _password.InitializationVector);
          }
          catch (Exception ex)
          {

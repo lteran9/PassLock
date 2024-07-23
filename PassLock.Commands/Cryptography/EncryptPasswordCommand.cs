@@ -14,6 +14,11 @@ namespace PassLock.Commands
 
       public Password? Execute()
       {
+         if (string.IsNullOrEmpty(_password))
+         {
+            throw new ArgumentNullException("Password cannot be null or empty.");
+         }
+
          try
          {
             var encryptedPassword = Encryptor.Encrypt(_password, out string key, out string iv);

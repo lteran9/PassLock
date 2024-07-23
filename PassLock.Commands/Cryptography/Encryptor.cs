@@ -8,7 +8,9 @@ namespace PassLock.Commands
       /// <summary>
       /// Encrypt a string using the built-in Advanced Encryption Standard (AES).
       /// </summary>
-      /// <param name="plaintext"></param>
+      /// <param name="data"></param>
+      /// <param name="key"></param>
+      /// <param name="iv"></param>
       /// <returns></returns>
       internal static string Encrypt(string data, out string key, out string iv)
       {
@@ -37,7 +39,9 @@ namespace PassLock.Commands
       /// <summary>
       /// Decrypt a string using the built-in Advanced Encryption Standard (AES).
       /// </summary>
-      /// <param name="plaintext"></param>
+      /// <param name="cipherText"></param>
+      /// <param name="key"></param>
+      /// <param name="iv"></param>
       /// <returns></returns>
       internal static string Decrypt(string cipherText, string key, string iv)
       {
