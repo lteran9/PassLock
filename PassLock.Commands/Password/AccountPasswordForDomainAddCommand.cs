@@ -19,6 +19,8 @@ namespace PassLock.Commands
          try
          {
             _accountPasswordForDomainDatabase.Insert(_model);
+
+            return true;
          }
          catch (Exception ex)
          {
