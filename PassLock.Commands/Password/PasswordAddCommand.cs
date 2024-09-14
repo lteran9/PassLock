@@ -4,7 +4,7 @@ using PassLock.Core;
 
 namespace PassLock.Commands
 {
-   public class PasswordAddCommand : ICommand<bool>
+   public class PasswordAddCommand : ICommand<Task<bool>>
    {
       private readonly IDatabaseModel<Password> _passwordDatabase;
       private readonly Password _encryptedPassword;
@@ -16,11 +16,11 @@ namespace PassLock.Commands
          _encryptedPassword = encryptedPassword;
       }
 
-      public bool Execute()
+      public async Task<bool> Execute()
       {
          try
          {
-            _passwordDatabase.Insert(_encryptedPassword);
+            await _passwordDatabase.InsertAsync(_encryptedPassword);
 
             return true;
          }

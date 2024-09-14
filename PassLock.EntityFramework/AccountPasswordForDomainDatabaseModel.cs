@@ -1,16 +1,17 @@
 using System;
 using PassLock.Core;
 using PassLock.Commands;
+using Microsoft.EntityFrameworkCore;
 
 namespace PassLock.EntityFramework
 {
    public class AccountPasswordForDomainDatabaseModel : IDatabaseModel<AccountPasswordForDomain>
    {
-      public List<AccountPasswordForDomain> GetAll()
+      public async Task<List<AccountPasswordForDomain>> GetAllAsync()
       {
          using (var db = new PDatabaseContext())
          {
-            return db.AccountDomainPasswords.ToList();
+            return await db.AccountDomainPasswords.ToListAsync();
          }
       }
 
@@ -19,42 +20,42 @@ namespace PassLock.EntityFramework
       /// </summary>
       /// <param name="id"></param>
       /// <returns></returns>
-      public AccountPasswordForDomain GetById(AccountPasswordForDomain model)
+      public async Task<AccountPasswordForDomain> GetByIdAsync(AccountPasswordForDomain model)
       {
          using (var db = new PDatabaseContext())
          {
-            return db.AccountDomainPasswords
-               .FirstOrDefault(x =>
+            return await db.AccountDomainPasswords
+               .FirstOrDefaultAsync(x =>
                   x.AccountId == model.AccountId &&
                   x.DomainId == model.DomainId) ?? new AccountPasswordForDomain();
          }
       }
 
 
-      public void Insert(AccountPasswordForDomain model)
+      public async Task InsertAsync(AccountPasswordForDomain model)
       {
          using (var db = new PDatabaseContext())
          {
             db.AccountDomainPasswords.Add(model);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
          }
       }
 
-      public void Remove(AccountPasswordForDomain model)
+      public async Task RemoveAsync(AccountPasswordForDomain model)
       {
          using (var db = new PDatabaseContext())
          {
             db.AccountDomainPasswords.Remove(model);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
          }
       }
 
-      public void Update(AccountPasswordForDomain model)
+      public async Task UpdateAsync(AccountPasswordForDomain model)
       {
          using (var db = new PDatabaseContext())
          {
             db.AccountDomainPasswords.Update(model);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
          }
       }
    }

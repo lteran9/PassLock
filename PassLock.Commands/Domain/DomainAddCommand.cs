@@ -3,7 +3,7 @@ using PassLock.Core;
 
 namespace PassLock.Commands
 {
-   public class DomainAddCommand : ICommand<bool>
+   public class DomainAddCommand : ICommand<Task<bool>>
    {
       private readonly string? _domain;
       private readonly IDatabaseModel<Domain> _domainDatabase;
@@ -14,7 +14,7 @@ namespace PassLock.Commands
          _domainDatabase = repo;
       }
 
-      public bool Execute()
+      public async Task<bool> Execute()
       {
          try
          {
@@ -24,7 +24,7 @@ namespace PassLock.Commands
             if (!string.IsNullOrEmpty(domain))
             {
                // Insert to database
-               _domainDatabase.Insert(new Domain() { Url = domain });
+               await _domainDatabase.InsertAsync(new Domain() { Url = domain });
 
                return true;
             }

@@ -3,7 +3,7 @@ using PassLock.Core;
 
 namespace PassLock.Commands
 {
-   public class DomainRemoveCommand : ICommand<bool>
+   public class DomainRemoveCommand : ICommand<Task<bool>>
    {
       private readonly int _id;
 
@@ -15,7 +15,7 @@ namespace PassLock.Commands
          _id = id;
       }
 
-      public bool Execute()
+      public async Task<bool> Execute()
       {
          try
          {
@@ -23,12 +23,12 @@ namespace PassLock.Commands
 
             if (_id > 0)
             {
-               domain = _domainDatabase.GetById(new Domain() { Id = _id });
+               domain = await _domainDatabase.GetByIdAsync(new Domain() { Id = _id });
             }
 
             if (domain != null)
             {
-               _domainDatabase.Remove(domain);
+               await _domainDatabase.RemoveAsync(domain);
 
                return true;
             }

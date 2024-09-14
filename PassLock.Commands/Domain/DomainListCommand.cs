@@ -3,7 +3,7 @@ using PassLock.Core;
 
 namespace PassLock.Commands
 {
-   public class DomainListCommand : ICommand<bool>
+   public class DomainListCommand : ICommand<Task<bool>>
    {
       private readonly IDatabaseModel<Domain> _domainDatabase;
 
@@ -12,11 +12,11 @@ namespace PassLock.Commands
          _domainDatabase = repo;
       }
 
-      public bool Execute()
+      public async Task<bool> Execute()
       {
          try
          {
-            var domains = _domainDatabase.GetAll();
+            var domains = await _domainDatabase.GetAllAsync();
 
             if (domains?.Any() == true)
             {

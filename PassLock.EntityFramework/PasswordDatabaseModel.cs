@@ -1,4 +1,5 @@
 using System;
+using Microsoft.EntityFrameworkCore;
 using PassLock.Commands;
 using PassLock.Core;
 
@@ -6,46 +7,46 @@ namespace PassLock.EntityFramework
 {
    public class PasswordDatabaseModel : IDatabaseModel<Password>
    {
-      public List<Password> GetAll()
+      public async Task<List<Password>> GetAllAsync()
       {
          using (var db = new PDatabaseContext())
          {
-            return db.Passwords.ToList();
+            return await db.Passwords.ToListAsync();
          }
       }
 
-      public Password GetById(Password model)
+      public async Task<Password> GetByIdAsync(Password model)
       {
          using (var db = new PDatabaseContext())
          {
-            return db.Passwords.Where(x => x.Id == model.Id).FirstOrDefault() ?? new Password();
+            return await db.Passwords.Where(x => x.Id == model.Id).FirstOrDefaultAsync() ?? new Password();
          }
       }
 
-      public void Insert(Password model)
+      public async Task InsertAsync(Password model)
       {
          using (var db = new PDatabaseContext())
          {
             db.Passwords.Add(model);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
          }
       }
 
-      public void Remove(Password model)
+      public async Task RemoveAsync(Password model)
       {
          using (var db = new PDatabaseContext())
          {
             db.Passwords.Remove(model);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
          }
       }
 
-      public void Update(Password model)
+      public async Task UpdateAsync(Password model)
       {
          using (var db = new PDatabaseContext())
          {
             db.Passwords.Update(model);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
          }
       }
    }

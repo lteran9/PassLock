@@ -8,41 +8,41 @@ namespace PassLock.UnitTests.Commands
    public class DomainTests
    {
       [Fact]
-      public void DomainAdd_Test01()
+      public async Task DomainAdd_Test01()
       {
          var repo = new Mock<IDatabaseModel<Domain>>();
          var domainAddCmd = new DomainAddCommand(repo.Object, "hotmail.com");
 
-         Assert.True(domainAddCmd.Execute());
+         Assert.True(await domainAddCmd.Execute());
       }
 
       [Fact]
-      public void DomainList_Test01()
+      public async Task DomainList_Test01()
       {
          var repo = new Mock<IDatabaseModel<Domain>>();
-         repo.Setup(x => x.GetAll()).Returns(new List<Domain>() { });
+         repo.Setup(x => x.GetAllAsync()).Returns(Task.FromResult(new List<Domain>() { }));
          var domainListCmd = new DomainListCommand(repo.Object);
 
-         Assert.True(domainListCmd.Execute());
+         Assert.True(await domainListCmd.Execute());
       }
 
       [Fact]
-      public void DomainRemove_Test01()
+      public async Task DomainRemove_Test01()
       {
          var repo = new Mock<IDatabaseModel<Domain>>();
          var domainRemoveCmd = new DomainRemoveCommand(repo.Object);
          // If no domain descriptors passed in command should return false
-         Assert.False(domainRemoveCmd.Execute());
+         Assert.False(await domainRemoveCmd.Execute());
       }
 
       [Fact]
-      public void DomainRemove_Test02()
+      public async Task DomainRemove_Test02()
       {
          var repo = new Mock<IDatabaseModel<Domain>>();
-         repo.Setup(x => x.GetById(It.IsAny<Domain>())).Returns(new Domain());
+         repo.Setup(x => x.GetByIdAsync(It.IsAny<Domain>())).Returns(Task.FromResult(new Domain()));
          var domainRemoveCmd = new DomainRemoveCommand(repo.Object, 1);
          // Command should return true because we are remove domain id 1
-         Assert.True(domainRemoveCmd.Execute());
+         Assert.True(await domainRemoveCmd.Execute());
       }
    }
 }

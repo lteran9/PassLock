@@ -3,7 +3,7 @@ using PassLock.Core;
 
 namespace PassLock.Commands
 {
-   public class PasswordGetCommand : ICommand<Password?>
+   public class PasswordGetCommand : ICommand<Task<Password?>>
    {
       private readonly int _id;
       private readonly IDatabaseModel<Password> _dbPassword;
@@ -14,11 +14,11 @@ namespace PassLock.Commands
          _dbPassword = repo;
       }
 
-      public Password? Execute()
+      public async Task<Password?> Execute()
       {
          try
          {
-            return _dbPassword.GetById(new Password() { Id = _id });
+            return await _dbPassword.GetByIdAsync(new Password() { Id = _id });
          }
          catch (Exception ex)
          {

@@ -3,7 +3,7 @@ using PassLock.Core;
 
 namespace PassLock.Commands
 {
-   public class AccountListCommand : ICommand<bool>
+   public class AccountListCommand : ICommand<Task<bool>>
    {
       private readonly IDatabaseModel<Account> _accountDatabase;
 
@@ -12,11 +12,11 @@ namespace PassLock.Commands
          _accountDatabase = repo;
       }
 
-      public bool Execute()
+      public async Task<bool> Execute()
       {
          try
          {
-            var accounts = _accountDatabase.GetAll();
+            var accounts = await _accountDatabase.GetAllAsync();
 
             if (accounts?.Any() == true)
             {

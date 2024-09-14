@@ -3,7 +3,7 @@ using PassLock.Core;
 
 namespace PassLock.Commands
 {
-   public class AccountRemoveCommand : ICommand<bool>
+   public class AccountRemoveCommand : ICommand<Task<bool>>
    {
       private readonly int _id;
       private readonly string _email;
@@ -19,7 +19,7 @@ namespace PassLock.Commands
          _userName = username;
       }
 
-      public bool Execute()
+      public async Task<bool> Execute()
       {
          try
          {
@@ -27,24 +27,24 @@ namespace PassLock.Commands
 
             if (_id > 0)
             {
-               account = _accountDatabase.GetById(new Account() { Id = _id });
+               account = await _accountDatabase.GetByIdAsync(new Account() { Id = _id });
             }
             else if (!string.IsNullOrEmpty(_email))
             {
                // Need to find a better way to get the account by email
-               var allAccounts = _accountDatabase.GetAll();
+               var allAccounts = await _accountDatabase.GetAllAsync();
                account = allAccounts.FirstOrDefault(a => a.Email == _email);
             }
             else if (!string.IsNullOrEmpty(_userName))
             {
                // Need to find a better way to get the account by username
-               var allAccounts = _accountDatabase.GetAll();
+               var allAccounts = await _accountDatabase.GetAllAsync();
                account = allAccounts.FirstOrDefault(a => a.UserName == _userName);
             }
 
             if (account != null)
             {
-               _accountDatabase.Remove(account);
+               await _accountDatabase.RemoveAsync(account);
 
                return true;
             }

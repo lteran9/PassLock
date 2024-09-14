@@ -1,4 +1,5 @@
 using System;
+using Microsoft.EntityFrameworkCore;
 using PassLock.Commands;
 using PassLock.Core;
 
@@ -6,46 +7,46 @@ namespace PassLock.EntityFramework
 {
    public class DomainDatabaseModel : IDatabaseModel<Domain>
    {
-      public List<Domain> GetAll()
+      public async Task<List<Domain>> GetAllAsync()
       {
          using (var db = new PDatabaseContext())
          {
-            return db.Domains.ToList();
+            return await db.Domains.ToListAsync();
          }
       }
 
-      public Domain GetById(Domain model)
+      public async Task<Domain> GetByIdAsync(Domain model)
       {
          using (var db = new PDatabaseContext())
          {
-            return db.Domains.Where(x => x.Id == model.Id).FirstOrDefault() ?? new Domain();
+            return await db.Domains.Where(x => x.Id == model.Id).FirstOrDefaultAsync() ?? new Domain();
          }
       }
 
-      public void Insert(Domain model)
+      public async Task InsertAsync(Domain model)
       {
          using (var db = new PDatabaseContext())
          {
             db.Domains.Add(model);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
          }
       }
 
-      public void Remove(Domain model)
+      public async Task RemoveAsync(Domain model)
       {
          using (var db = new PDatabaseContext())
          {
             db.Domains.Remove(model);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
          }
       }
 
-      public void Update(Domain model)
+      public async Task UpdateAsync(Domain model)
       {
          using (var db = new PDatabaseContext())
          {
             db.Domains.Update(model);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
          }
       }
    }

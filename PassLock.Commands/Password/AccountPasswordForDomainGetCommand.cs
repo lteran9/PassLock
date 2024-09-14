@@ -3,7 +3,7 @@ using PassLock.Core;
 
 namespace PassLock.Commands
 {
-   public class AccountPasswordForDomainGetCommand : ICommand<AccountPasswordForDomain?>
+   public class AccountPasswordForDomainGetCommand : ICommand<Task<AccountPasswordForDomain?>>
    {
       private readonly int _accountId;
       private readonly int _domainId;
@@ -17,11 +17,16 @@ namespace PassLock.Commands
          _dbAccountPasswordForDomain = repo;
       }
 
-      public AccountPasswordForDomain? Execute()
+      public async Task<AccountPasswordForDomain?> Execute()
       {
          try
          {
-            return _dbAccountPasswordForDomain.GetById(new AccountPasswordForDomain() { AccountId = _accountId, DomainId = _domainId });
+            return await _dbAccountPasswordForDomain.GetByIdAsync(
+               new AccountPasswordForDomain()
+               {
+                  AccountId = _accountId,
+                  DomainId = _domainId
+               });
          }
          catch (Exception ex)
          {

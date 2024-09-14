@@ -4,10 +4,10 @@ namespace PassLock.Commands
 {
    public interface IDatabaseModel<T> where T : class
    {
-      public void Insert(T model);
-      public void Update(T model);
-      public void Remove(T model);
-      public T GetById(T model);
-      public List<T> GetAll();
+      public Task InsertAsync(T model);
+      public Task UpdateAsync(T model);
+      public Task RemoveAsync(T model);
+      public Task<T> GetByIdAsync(T model);
+      public Task<List<T>> GetAllAsync();
    }
 }

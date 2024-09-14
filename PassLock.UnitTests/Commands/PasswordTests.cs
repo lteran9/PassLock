@@ -8,50 +8,50 @@ namespace PassLock.UnitTests.Commands
    public class PasswordTests
    {
       [Fact]
-      public void PasswordAdd_Test01()
+      public async Task PasswordAdd_Test01()
       {
          var repo = new Mock<IDatabaseModel<Password>>();
          var passwordAddCmd = new PasswordAddCommand(repo.Object, new Password());
 
-         Assert.True(passwordAddCmd.Execute());
+         Assert.True(await passwordAddCmd.Execute());
       }
 
       [Fact]
-      public void PasswordGet_Test01()
+      public async Task PasswordGet_Test01()
       {
          var repo = new Mock<IDatabaseModel<Password>>();
-         repo.Setup(x => x.GetById(It.IsAny<Password>())).Returns(new Password());
+         repo.Setup(x => x.GetByIdAsync(It.IsAny<Password>())).Returns(Task.FromResult(new Password()));
          var passwordGetCmd = new PasswordGetCommand(repo.Object, 1);
          // Validate we do not get a null value for password with Id
-         Assert.NotNull(passwordGetCmd.Execute());
+         Assert.NotNull(await passwordGetCmd.Execute());
       }
 
       [Fact]
-      public void PasswordGet_Test02()
+      public async Task PasswordGet_Test02()
       {
          var repo = new Mock<IDatabaseModel<Password>>();
          var passwordGetCmd = new PasswordGetCommand(repo.Object, 1);
          // Validate we get null when no password found for Id
-         Assert.Null(passwordGetCmd.Execute());
+         Assert.Null(await passwordGetCmd.Execute());
       }
 
       [Fact]
-      public void AccountPasswordForDomainAdd_Test01()
+      public async Task AccountPasswordForDomainAdd_Test01()
       {
          var repo = new Mock<IDatabaseModel<AccountPasswordForDomain>>();
          var accountPasswordForDomainAddCmd = new AccountPasswordForDomainAddCommand(repo.Object, new AccountPasswordForDomain());
 
-         Assert.True(accountPasswordForDomainAddCmd.Execute());
+         Assert.True(await accountPasswordForDomainAddCmd.Execute());
       }
 
       [Fact]
-      public void AccountPasswordForDomainGet_Test01()
+      public async Task AccountPasswordForDomainGet_Test01()
       {
          var repo = new Mock<IDatabaseModel<AccountPasswordForDomain>>();
-         repo.Setup(x => x.GetById(It.IsAny<AccountPasswordForDomain>())).Returns(new AccountPasswordForDomain());
+         repo.Setup(x => x.GetByIdAsync(It.IsAny<AccountPasswordForDomain>())).Returns(Task.FromResult(new AccountPasswordForDomain()));
          var accountPasswordForDomainGetCmd = new AccountPasswordForDomainGetCommand(repo.Object, 1, 1);
 
-         Assert.NotNull(accountPasswordForDomainGetCmd.Execute());
+         Assert.NotNull(await accountPasswordForDomainGetCmd.Execute());
       }
    }
 }

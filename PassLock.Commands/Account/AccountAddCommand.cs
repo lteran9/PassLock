@@ -3,7 +3,7 @@ using PassLock.Core;
 
 namespace PassLock.Commands
 {
-   public class AccountAddCommand : ICommand<bool>
+   public class AccountAddCommand : ICommand<Task<bool>>
    {
       private readonly IDatabaseModel<Account> _accountDatabase;
       private readonly string _email;
@@ -16,7 +16,7 @@ namespace PassLock.Commands
          _userName = userName;
       }
 
-      public bool Execute()
+      public async Task<bool> Execute()
       {
          try
          {
@@ -27,7 +27,7 @@ namespace PassLock.Commands
                   UserName = _userName
                };
             // Insert to database
-            _accountDatabase.Insert(account);
+            await _accountDatabase.InsertAsync(account);
 
             return true;
          }
