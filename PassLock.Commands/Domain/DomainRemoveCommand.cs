@@ -19,19 +19,20 @@ namespace PassLock.Commands
       {
          try
          {
-            Domain? account = null;
+            Domain? domain = null;
 
             if (_id > 0)
             {
-               account = _domainDatabase.GetById(new Domain() { Id = _id });
+               domain = _domainDatabase.GetById(new Domain() { Id = _id });
             }
 
-            if (account != null)
+            if (domain != null)
             {
-               _domainDatabase.Remove(account);
+               _domainDatabase.Remove(domain);
+
+               return true;
             }
 
-            return true;
          }
          catch (Exception ex)
          {

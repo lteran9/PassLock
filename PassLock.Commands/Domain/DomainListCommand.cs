@@ -16,12 +16,12 @@ namespace PassLock.Commands
       {
          try
          {
-            var Domains = _domainDatabase.GetAll();
+            var domains = _domainDatabase.GetAll();
 
-            if (Domains?.Any() == true)
+            if (domains?.Any() == true)
             {
                Console.WriteLine("Domains:");
-               foreach (var dom in Domains)
+               foreach (var dom in domains)
                {
                   Console.WriteLine($"\t{dom.Id}. {dom.Url}");
                }
