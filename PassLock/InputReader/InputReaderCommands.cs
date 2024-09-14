@@ -39,8 +39,13 @@ namespace PassLock.InputReader
          var message = new StringBuilder();
          message.Append("Usage: passlock [operation] [arguments]...\n\n");
          message.Append("Manage your passwords directly from the command line.\n\n");
-         message.Append("runtime-options:\n\n");
-         message.Append("arguments:\n\n");
+         message.Append("options:\n\n");
+         message.Append("\t-h, --help\n\n");
+         message.Append("operation:\n\n");
+         message.Append("\tencrypt\n");
+         message.Append("\tdecrypt\n");
+         message.Append("\tdomain\n");
+         message.Append("\taccount\n\n");
 
          Console.WriteLine(message);
       }
