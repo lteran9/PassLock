@@ -45,9 +45,9 @@ namespace PassLock.Commands
             if (account != null)
             {
                _accountDatabase.Remove(account);
-            }
 
-            return true;
+               return true;
+            }
          }
          catch (Exception ex)
          {

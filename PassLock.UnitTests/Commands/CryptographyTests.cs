@@ -2,7 +2,7 @@ using System;
 using PassLock.Commands;
 using PassLock.Core;
 
-namespace PassLock.UnitTests
+namespace PassLock.UnitTests.Commands
 {
    public class CryptographyTests
    {
