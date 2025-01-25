@@ -1,7 +1,9 @@
 using System;
 using Moq;
-using PassLock.Commands;
 using PassLock.Core;
+using PassLock.Commands;
+using PassLock.EntityFramework;
+using PassLock.Queries;
 
 namespace PassLock.UnitTests.Commands
 {

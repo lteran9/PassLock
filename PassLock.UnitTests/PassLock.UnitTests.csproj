@@ -26,6 +26,7 @@
   <ItemGroup>
     <ProjectReference Include="..\PassLock.Core\PassLock.Core.csproj" />
     <ProjectReference Include="..\PassLock.Commands\PassLock.Commands.csproj" />
+    <ProjectReference Include="..\PassLock.Queries\PassLock.Queries.csproj" />
   </ItemGroup>
 
 </Project>

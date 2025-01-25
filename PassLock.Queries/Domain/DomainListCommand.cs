@@ -1,9 +1,10 @@
 using System;
 using PassLock.Core;
+using PassLock.EntityFramework;
 
-namespace PassLock.Commands
+namespace PassLock.Queries
 {
-   public class DomainListCommand : ICommand<Task<bool>>
+   public class DomainListCommand : IQuery<Task<bool>>
    {
       private readonly IDatabaseModel<Domain> _domainDatabase;
 

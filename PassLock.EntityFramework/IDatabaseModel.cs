@@ -1,6 +1,6 @@
 using System;
 
-namespace PassLock.Commands
+namespace PassLock.EntityFramework
 {
    public interface IDatabaseModel<T> where T : class
    {

@@ -1,9 +1,10 @@
 using System;
 using PassLock.Core;
+using PassLock.EntityFramework;
 
-namespace PassLock.Commands
+namespace PassLock.Queries
 {
-   public class AccountPasswordForDomainGetCommand : ICommand<Task<AccountPasswordForDomain?>>
+   public class AccountPasswordForDomainGetCommand : IQuery<Task<AccountPasswordForDomain?>>
    {
       private readonly int _accountId;
       private readonly int _domainId;

@@ -20,7 +20,7 @@
    </ItemGroup>
 
    <ItemGroup>
-     <ProjectReference Include="..\PassLock.Commands\PassLock.Commands.csproj" />
+     <ProjectReference Include="..\PassLock.Core\PassLock.Core.csproj" />
    </ItemGroup>
 
 </Project>

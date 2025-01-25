@@ -1,6 +1,5 @@
 using System;
 using Microsoft.EntityFrameworkCore;
-using PassLock.Commands;
 using PassLock.Core;
 
 namespace PassLock.EntityFramework

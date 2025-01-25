@@ -1,9 +1,10 @@
 using System;
 using PassLock.Core;
+using PassLock.EntityFramework;
 
-namespace PassLock.Commands
+namespace PassLock.Queries
 {
-   public class PasswordGetCommand : ICommand<Task<Password?>>
+   public class PasswordGetCommand : IQuery<Task<Password?>>
    {
       private readonly int _id;
       private readonly IDatabaseModel<Password> _dbPassword;

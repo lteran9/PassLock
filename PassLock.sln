@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PassLock.EntityFramework", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PassLock.UnitTests", "PassLock.UnitTests\PassLock.UnitTests.csproj", "{96E87FAB-DF27-4FEF-8608-93857BBBAE47}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PassLock.Queries", "PassLock.Queries\PassLock.Queries.csproj", "{F62AABA5-914F-45F0-B612-648E9C07609D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{96E87FAB-DF27-4FEF-8608-93857BBBAE47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96E87FAB-DF27-4FEF-8608-93857BBBAE47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{96E87FAB-DF27-4FEF-8608-93857BBBAE47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F62AABA5-914F-45F0-B612-648E9C07609D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F62AABA5-914F-45F0-B612-648E9C07609D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F62AABA5-914F-45F0-B612-648E9C07609D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F62AABA5-914F-45F0-B612-648E9C07609D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
