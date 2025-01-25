@@ -1,14 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+   <ItemGroup>
+     <ProjectReference Include="..\PassLock.Commands\PassLock.Commands.csproj" />
+     <ProjectReference Include="..\PassLock.Queries\PassLock.Queries.csproj" />
+   </ItemGroup>
+
    <PropertyGroup>
       <OutputType>Exe</OutputType>
       <TargetFramework>net7.0</TargetFramework>
       <ImplicitUsings>enable</ImplicitUsings>
       <Nullable>enable</Nullable>
    </PropertyGroup>
-
-   <ItemGroup>
-      <ProjectReference Include="..\PassLock.EntityFramework\PassLock.EntityFramework.csproj" />
-   </ItemGroup>
 
 </Project>

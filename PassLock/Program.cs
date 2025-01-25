@@ -3,6 +3,7 @@ using PassLock.EntityFramework;
 using PassLock.Commands;
 using PassLock.Core;
 using PassLock.InputReader;
+using PassLock.Queries;
 
 namespace PassLock
 {
@@ -69,10 +70,10 @@ namespace PassLock
                      if (accountId > 0 && domainId > 0)
                      {
                         var password = InputReaderCommands.ReadPassword.Execute();
-                        var encryptedPassword = CommandDispatch.Execute(new EncryptPasswordCommand(password));
+                        var encryptedPassword = Commands.CommandDispatch.Execute(new EncryptPasswordCommand(password));
                         if (encryptedPassword != null)
                         {
-                           await CommandDispatch.Execute(new PasswordAddCommand(dbPassword, encryptedPassword));
+                           await Commands.CommandDispatch.Execute(new PasswordAddCommand(dbPassword, encryptedPassword));
                            if (encryptedPassword.Id > 0)
                            {
                               var dbModel =
@@ -82,7 +83,7 @@ namespace PassLock
                                     DomainId = domainId,
                                     PasswordId = encryptedPassword.Id
                                  };
-                              await CommandDispatch.Execute(new AccountPasswordForDomainAddCommand(dbAccountPasswordForDomain, dbModel));
+                              await Commands.CommandDispatch.Execute(new AccountPasswordForDomainAddCommand(dbAccountPasswordForDomain, dbModel));
                            }
                            else
                            {
@@ -109,10 +110,10 @@ namespace PassLock
 
                      if (accountId > 0 && domainId > 0)
                      {
-                        var accountPassword = await CommandDispatch.Execute(new AccountPasswordForDomainGetCommand(dbAccountPasswordForDomain, accountId, domainId));
+                        var accountPassword = await Queries.CommandDispatch.Execute(new AccountPasswordForDomainGetCommand(dbAccountPasswordForDomain, accountId, domainId));
                         var passwordId = accountPassword?.PasswordId ?? 0;
-                        var password = await CommandDispatch.Execute(new PasswordGetCommand(dbPassword, passwordId));
-                        var decryptedPassword = CommandDispatch.Execute(new PasswordDecryptCommand(password));
+                        var password = await Queries.CommandDispatch.Execute(new PasswordGetCommand(dbPassword, passwordId));
+                        var decryptedPassword = Commands.CommandDispatch.Execute(new PasswordDecryptCommand(password));
 
                         if (!string.IsNullOrEmpty(decryptedPassword))
                         {
@@ -130,17 +131,17 @@ namespace PassLock
                   switch (args[1])
                   {
                      case "add":
-                        await CommandDispatch.Execute(new DomainAddCommand(dbDomain));
+                        await Commands.CommandDispatch.Execute(new DomainAddCommand(dbDomain));
                         break;
                      case "list":
-                        await CommandDispatch.Execute(new DomainListCommand(dbDomain));
+                        await Queries.CommandDispatch.Execute(new DomainListCommand(dbDomain));
                         break;
                      case "remove":
                         if (args.Length >= 3)
                         {
                            if (int.TryParse(args[2], out int id))
                            {
-                              await CommandDispatch.Execute(new DomainRemoveCommand(dbDomain, id: id));
+                              await Commands.CommandDispatch.Execute(new DomainRemoveCommand(dbDomain, id: id));
                            }
                         }
                         else
@@ -160,10 +161,10 @@ namespace PassLock
                         string email = InputReaderCommands.ReadEmail.Execute();
                         string userName = InputReaderCommands.ReadUserName.Execute();
 
-                        await CommandDispatch.Execute(new AccountAddCommand(dbAccount, email, userName));
+                        await Commands.CommandDispatch.Execute(new AccountAddCommand(dbAccount, email, userName));
                         break;
                      case "list":
-                        await CommandDispatch.Execute(new AccountListCommand(dbAccount));
+                        await Queries.CommandDispatch.Execute(new AccountListCommand(dbAccount));
                         break;
                      case "remove":
                         if (args.Length >= 3)
@@ -171,17 +172,17 @@ namespace PassLock
                            if (int.TryParse(args[2], out int id))
                            {
                               // Remove by id
-                              await CommandDispatch.Execute(new AccountRemoveCommand(dbAccount, id: id));
+                              await Commands.CommandDispatch.Execute(new AccountRemoveCommand(dbAccount, id: id));
                            }
                            else if (args[2]?.Contains("@") == true)
                            {
                               // Remove by email
-                              await CommandDispatch.Execute(new AccountRemoveCommand(dbAccount, email: args[2]));
+                              await Commands.CommandDispatch.Execute(new AccountRemoveCommand(dbAccount, email: args[2]));
                            }
                            else
                            {
                               // Remove by username
-                              await CommandDispatch.Execute(new AccountRemoveCommand(dbAccount, username: args[2]));
+                              await Commands.CommandDispatch.Execute(new AccountRemoveCommand(dbAccount, username: args[2]));
                            }
                         }
                         else

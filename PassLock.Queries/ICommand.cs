@@ -1,7 +1,6 @@
 using System;
-using PassLock.Core;
 
-namespace PassLock.Commands
+namespace PassLock.Queries
 {
    /// <summary>
    /// Generic class to execute commands.
@@ -9,7 +8,7 @@ namespace PassLock.Commands
    /// <typeparam name="TResponse"></typeparam> 
    public static partial class CommandDispatch
    {
-      public static TResponse Execute<TResponse>(ICommand<TResponse> command)
+      public static TResponse Execute<TResponse>(IQuery<TResponse> command)
       {
          return command.Execute();
       }
