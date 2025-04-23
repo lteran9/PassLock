@@ -5,19 +5,18 @@ namespace PassLock.UnitTests
 {
    public class CoreTests
    {
-      private readonly string userName = "user";
-      private readonly string email = "test@test.com";
-      private readonly string domainUrl = "hotmail.com";
-
-      [Fact]
-      public void Account_Test01()
+      [Theory]
+      [InlineData("", "")]
+      [InlineData("randomUser", "random@test.com")]
+      [InlineData("x23_Test", "jamal_test@email.com")]
+      public void Account_SanityTest01(string userName, string email)
       {
          var acct = new Account();
 
          Assert.Equal(0, acct.Id);
          // Validate nullable column for Entity Framework
-         Assert.Null(acct.Email);
          Assert.Null(acct.UserName);
+         Assert.Null(acct.Email);
 
          acct.Email = email;
          acct.UserName = userName;
@@ -30,8 +29,10 @@ namespace PassLock.UnitTests
          Assert.NotEqual(DateTime.MinValue, acct.UpdatedAt);
       }
 
-      [Fact]
-      public void Domain_Test01()
+      [Theory]
+      [InlineData("")]
+      [InlineData("hotmail.com")]
+      public void Domain_SanityTest01(string domainUrl)
       {
          var domain = new Domain();
 
@@ -49,7 +50,7 @@ namespace PassLock.UnitTests
       }
 
       [Fact]
-      public void Password_Test01()
+      public void Password_SanityTest01()
       {
          var password = new Password();
 
