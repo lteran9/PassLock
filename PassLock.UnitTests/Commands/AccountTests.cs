@@ -1,5 +1,6 @@
 using System;
 using Moq;
+using AutoFixture.Xunit2;
 using PassLock.Core;
 using PassLock.Commands;
 using PassLock.EntityFramework;
@@ -9,40 +10,49 @@ namespace PassLock.UnitTests.Commands
 {
    public class AccountTests
    {
-      [Fact]
-      public async Task AccountAdd_Test01()
+      [Theory]
+      [AutoMoq]
+      public async Task AccountAdd_Test01(
+         [Frozen] Mock<IDatabaseModel<Account>> repo)
       {
-         var repo = new Mock<IDatabaseModel<Account>>();
          var accountAddCmd = new AccountAddCommand(repo.Object, "test@test.com", "testUser");
 
          Assert.True(await accountAddCmd.Execute());
       }
 
-      [Fact]
-      public async Task AccountList_Test01()
+      [Theory]
+      [AutoMoq]
+      public async Task AccountList_Test01(
+         [Frozen] Mock<IDatabaseModel<Account>> repo)
       {
-         var repo = new Mock<IDatabaseModel<Account>>();
          var accountListCmd = new AccountListCommand(repo.Object);
 
          Assert.True(await accountListCmd.Execute());
       }
 
-      [Fact]
-      public async Task AccountRemove_Test01()
+      [Theory]
+      [AutoMoq]
+      public async Task AccountRemove_Test01(
+         [Frozen] Mock<IDatabaseModel<Account>> repo)
       {
-         var repo = new Mock<IDatabaseModel<Account>>();
          var accountRemoveCmd = new AccountRemoveCommand(repo.Object);
+
          // If no account descriptors passed in command should return false
          Assert.False(await accountRemoveCmd.Execute());
       }
 
-      [Fact]
-      public async Task AccountRemove_Test02()
+      [Theory]
+      [AutoMoq]
+      public async Task AccountRemove_Test02(
+         [Frozen] Mock<IDatabaseModel<Account>> repo)
       {
-         var repo = new Mock<IDatabaseModel<Account>>();
+         // Arrange
          repo.Setup(x => x.GetByIdAsync(It.IsAny<Account>())).Returns(Task.FromResult(new Account()));
+
+         // Act
          var accountRemoveCmd = new AccountRemoveCommand(repo.Object, 1);
-         // Command should return true because we are remove account id 1
+
+         // Assert
          Assert.True(await accountRemoveCmd.Execute());
       }
    }
