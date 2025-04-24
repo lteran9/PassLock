@@ -1,4 +1,5 @@
 using System;
+using AutoFixture.Xunit2;
 using Moq;
 using PassLock.Commands;
 using PassLock.Core;
@@ -9,42 +10,52 @@ namespace PassLock.UnitTests.Commands
 {
    public class DomainTests
    {
-      [Fact]
-      public async Task DomainAdd_Test01()
+      [Theory]
+      [AutoMoq]
+      public async Task DomainAdd_Test01(
+         [Frozen] Mock<IDatabaseModel<Domain>> repo)
       {
-         var repo = new Mock<IDatabaseModel<Domain>>();
          var domainAddCmd = new DomainAddCommand(repo.Object, "hotmail.com");
 
          Assert.True(await domainAddCmd.Execute());
       }
 
-      [Fact]
-      public async Task DomainList_Test01()
+      [Theory]
+      [AutoMoq]
+      public async Task DomainList_Test01(
+         [Frozen] Mock<IDatabaseModel<Domain>> repo)
       {
-         var repo = new Mock<IDatabaseModel<Domain>>();
+         // Arrange
          repo.Setup(x => x.GetAllAsync()).Returns(Task.FromResult(new List<Domain>() { }));
+         // Act
          var domainListCmd = new DomainListCommand(repo.Object);
-
-         Assert.True(await domainListCmd.Execute());
+         // Assert
+         var response = await domainListCmd.Execute();
+         Assert.True(response);
       }
 
-      [Fact]
-      public async Task DomainRemove_Test01()
+      [Theory]
+      [AutoMoq]
+      public async Task DomainRemove_Test01(
+         [Frozen] Mock<IDatabaseModel<Domain>> repo)
       {
-         var repo = new Mock<IDatabaseModel<Domain>>();
          var domainRemoveCmd = new DomainRemoveCommand(repo.Object);
          // If no domain descriptors passed in command should return false
          Assert.False(await domainRemoveCmd.Execute());
       }
 
-      [Fact]
-      public async Task DomainRemove_Test02()
+      [Theory]
+      [AutoMoq]
+      public async Task DomainRemove_Test02(
+         [Frozen] Mock<IDatabaseModel<Domain>> repo)
       {
-         var repo = new Mock<IDatabaseModel<Domain>>();
+         // Arange
          repo.Setup(x => x.GetByIdAsync(It.IsAny<Domain>())).Returns(Task.FromResult(new Domain()));
+         // Act
          var domainRemoveCmd = new DomainRemoveCommand(repo.Object, 1);
-         // Command should return true because we are remove domain id 1
-         Assert.True(await domainRemoveCmd.Execute());
+         // Assert
+         var response = await domainRemoveCmd.Execute();
+         Assert.True(response);
       }
    }
 }
