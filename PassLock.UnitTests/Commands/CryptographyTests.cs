@@ -7,7 +7,7 @@ namespace PassLock.UnitTests.Commands
    public class CryptographyTests
    {
       [Fact]
-      public void Test_01()
+      public void GivenPassword_WhenEmpty_ThrowsException()
       {
          var password = string.Empty;
          var encryptPassword = new EncryptPasswordCommand(password);
@@ -21,12 +21,14 @@ namespace PassLock.UnitTests.Commands
       }
 
       [Fact]
-      public void Test_02()
+      public void GivenPassword_WhenSimple_NotEmptyOrNull()
       {
+         // Arrange
          var password = "abcd1234";
          var encryptCommand = new EncryptPasswordCommand(password);
+         // Act
          var encrypted = encryptCommand.Execute();
-         // Validate the basics
+         // Assert
          Assert.NotNull(encrypted);
          Assert.True(!string.IsNullOrEmpty(encrypted?.Value));
          Assert.True(!string.IsNullOrEmpty(encrypted?.Key));
@@ -35,14 +37,18 @@ namespace PassLock.UnitTests.Commands
       }
 
       [Fact]
-      public void Test_03()
+      public void GivenSamePassword_WhenRepeatedlyEncrypted_ResultsInDifferentHash()
       {
+         // Arrange
          var password = "zywx9874";
          var encryptCommand = new EncryptPasswordCommand(password);
+
+         // Act
          var encryptedRoundOne = encryptCommand.Execute();
          var encryptedRoundTwo = encryptCommand.Execute();
          var encryptedRoundThree = encryptCommand.Execute();
 
+         // Assert
          Assert.True(encryptedRoundOne != null);
          Assert.True(encryptedRoundTwo != null);
          Assert.True(encryptedRoundThree != null);
@@ -52,25 +58,27 @@ namespace PassLock.UnitTests.Commands
       }
 
       [Fact]
-      public void Test_04()
+      public void GivenPassword_WhenEncrypted_CanAlsoBeDecrypted()
       {
+         // Arrange
          var password = "The quick brown fox jumps over the lazy dog";
          var encryptCommand = new EncryptPasswordCommand(password);
+         // Act
          var encrypted = encryptCommand.Execute();
-
+         // Assert
          Assert.NotNull(encrypted);
-         Assert.NotEqual(password, encrypted?.Value);
-         if (encrypted != null)
-         {
-            var decryptCommand = new DecryptPassword(encrypted);
+         Assert.NotEqual(password, encrypted.Value);
 
-            Assert.Equal(password, decryptCommand.Execute());
-         }
+         // Act
+         var decryptCommand = new DecryptPassword(encrypted);
+         // Assert
+         Assert.Equal(password, decryptCommand.Execute());
       }
 
       [Fact]
-      public void Test_05()
+      public void GivenComplexPassword_WhenEncrypted_IsNotEmptyOrNull()
       {
+         // Arrange
          int length = 8192;
          // Test string of indeterminate length (^ controlled by above)
          char[] password = new char[length];
@@ -83,10 +91,11 @@ namespace PassLock.UnitTests.Commands
          Assert.NotEmpty(result);
 
          var encryptCommand = new EncryptPasswordCommand(result);
+         // Act
          var encrypted = encryptCommand.Execute();
-
+         // Assert
          Assert.NotNull(encrypted);
-         Assert.NotEqual(result, encrypted?.Value);
+         Assert.NotEqual(result, encrypted.Value);
       }
    }
 }
