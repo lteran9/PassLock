@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace PassLock.EntityFramework
 {
-   public class AccountPasswordForDomainDatabaseModel : IDatabaseModel<AccountPasswordForDomain>
+   public class AccountPasswordForDomainRepository : IDatabaseModel<AccountPasswordForDomain>
    {
       public async Task<List<AccountPasswordForDomain>> GetAllAsync()
       {

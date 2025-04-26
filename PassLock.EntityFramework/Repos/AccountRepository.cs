@@ -4,47 +4,47 @@ using PassLock.Core;
 
 namespace PassLock.EntityFramework
 {
-   public class PasswordDatabaseModel : IDatabaseModel<Password>
+   public class AccountRepository : IDatabaseModel<Account>
    {
-      public async Task<List<Password>> GetAllAsync()
+      public async Task<List<Account>> GetAllAsync()
       {
          using (var db = new PDatabaseContext())
          {
-            return await db.Passwords.ToListAsync();
+            return await db.Accounts.ToListAsync();
          }
       }
 
-      public async Task<Password> GetByIdAsync(Password model)
+      public async Task<Account> GetByIdAsync(Account model)
       {
          using (var db = new PDatabaseContext())
          {
-            return await db.Passwords.Where(x => x.Id == model.Id).FirstOrDefaultAsync() ?? new Password();
+            return await db.Accounts.Where(x => x.Id == model.Id).FirstOrDefaultAsync() ?? new Account();
          }
       }
 
-      public async Task InsertAsync(Password model)
+      public async Task InsertAsync(Account model)
       {
          using (var db = new PDatabaseContext())
          {
-            db.Passwords.Add(model);
+            db.Accounts.Add(model);
             await db.SaveChangesAsync();
          }
       }
 
-      public async Task RemoveAsync(Password model)
+      public async Task RemoveAsync(Account model)
       {
          using (var db = new PDatabaseContext())
          {
-            db.Passwords.Remove(model);
+            db.Accounts.Remove(model);
             await db.SaveChangesAsync();
          }
       }
 
-      public async Task UpdateAsync(Password model)
+      public async Task UpdateAsync(Account model)
       {
          using (var db = new PDatabaseContext())
          {
-            db.Passwords.Update(model);
+            db.Accounts.Update(model);
             await db.SaveChangesAsync();
          }
       }

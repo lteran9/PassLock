@@ -4,47 +4,47 @@ using PassLock.Core;
 
 namespace PassLock.EntityFramework
 {
-   public class DomainDatabaseModel : IDatabaseModel<Domain>
+   public class PasswordRepository : IDatabaseModel<Password>
    {
-      public async Task<List<Domain>> GetAllAsync()
+      public async Task<List<Password>> GetAllAsync()
       {
          using (var db = new PDatabaseContext())
          {
-            return await db.Domains.ToListAsync();
+            return await db.Passwords.ToListAsync();
          }
       }
 
-      public async Task<Domain> GetByIdAsync(Domain model)
+      public async Task<Password> GetByIdAsync(Password model)
       {
          using (var db = new PDatabaseContext())
          {
-            return await db.Domains.Where(x => x.Id == model.Id).FirstOrDefaultAsync() ?? new Domain();
+            return await db.Passwords.Where(x => x.Id == model.Id).FirstOrDefaultAsync() ?? new Password();
          }
       }
 
-      public async Task InsertAsync(Domain model)
+      public async Task InsertAsync(Password model)
       {
          using (var db = new PDatabaseContext())
          {
-            db.Domains.Add(model);
+            db.Passwords.Add(model);
             await db.SaveChangesAsync();
          }
       }
 
-      public async Task RemoveAsync(Domain model)
+      public async Task RemoveAsync(Password model)
       {
          using (var db = new PDatabaseContext())
          {
-            db.Domains.Remove(model);
+            db.Passwords.Remove(model);
             await db.SaveChangesAsync();
          }
       }
 
-      public async Task UpdateAsync(Domain model)
+      public async Task UpdateAsync(Password model)
       {
          using (var db = new PDatabaseContext())
          {
-            db.Domains.Update(model);
+            db.Passwords.Update(model);
             await db.SaveChangesAsync();
          }
       }

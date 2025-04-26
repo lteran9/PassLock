@@ -18,21 +18,21 @@ namespace PassLock
       /// CRUD operations for the <c>Account</c> model.
       /// </summary>
       /// <returns></returns>
-      private static readonly AccountDatabaseModel dbAccount = new AccountDatabaseModel();
+      private static readonly AccountRepository dbAccount = new AccountRepository();
       /// <summary>
       /// CRUD operations for the <c>Domain</c> model.
       /// </summary>
       /// <returns></returns>
-      private static readonly DomainDatabaseModel dbDomain = new DomainDatabaseModel();
+      private static readonly DomainRepository dbDomain = new DomainRepository();
       /// <summary>
       /// CRUD operations for the <c>Password</c> model.
       /// </summary> 
-      private static readonly PasswordDatabaseModel dbPassword = new PasswordDatabaseModel();
+      private static readonly PasswordRepository dbPassword = new PasswordRepository();
       /// <summary>
       /// CRUD operations for <c>AccountPasswordForDomain</c> model.
       /// </summary>
       /// <returns></returns>
-      private static readonly AccountPasswordForDomainDatabaseModel dbAccountPasswordForDomain = new AccountPasswordForDomainDatabaseModel();
+      private static readonly AccountPasswordForDomainRepository dbAccountPasswordForDomain = new AccountPasswordForDomainRepository();
 
       #endregion
 
