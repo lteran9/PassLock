@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
    <ItemGroup>
-     <ProjectReference Include="..\PassLock.Commands\PassLock.Commands.csproj" />
-     <ProjectReference Include="..\PassLock.Queries\PassLock.Queries.csproj" />
+      <ProjectReference Include="..\PassLock.Commands\PassLock.Commands.csproj" />
+      <ProjectReference Include="..\PassLock.Queries\PassLock.Queries.csproj" />
    </ItemGroup>
 
    <PropertyGroup>
@@ -10,6 +10,7 @@
       <TargetFramework>net7.0</TargetFramework>
       <ImplicitUsings>enable</ImplicitUsings>
       <Nullable>enable</Nullable>
+      <CheckEolTargetFramework>false</CheckEolTargetFramework>
    </PropertyGroup>
 
 </Project>
