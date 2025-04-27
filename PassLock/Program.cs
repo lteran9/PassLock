@@ -112,13 +112,20 @@ namespace PassLock
                      {
                         var accountPassword = await Queries.CommandDispatch.Execute(new AccountPasswordForDomainGetCommand(dbAccountPasswordForDomain, accountId, domainId));
                         var passwordId = accountPassword?.PasswordId ?? 0;
-                        var password = await Queries.CommandDispatch.Execute(new PasswordGetCommand(dbPassword, passwordId));
-                        var decryptedPassword = Commands.CommandDispatch.Execute(new PasswordDecryptCommand(password));
-
-                        if (!string.IsNullOrEmpty(decryptedPassword))
+                        if (passwordId > 0)
                         {
-                           OsxClipboard.SetText(decryptedPassword);
-                           LogUtility.Info("Password value copied to clipboard.");
+                           var password = await Queries.CommandDispatch.Execute(new PasswordGetCommand(dbPassword, passwordId));
+                           var decryptedPassword = Commands.CommandDispatch.Execute(new PasswordDecryptCommand(password));
+
+                           if (!string.IsNullOrEmpty(decryptedPassword))
+                           {
+                              OsxClipboard.SetText(decryptedPassword);
+                              LogUtility.Info("Password value copied to clipboard.");
+                           }
+                        }
+                        else
+                        {
+                           LogUtility.Info("Could not find a matching password for the account and domain.");
                         }
                      }
                   }
