@@ -24,7 +24,14 @@ namespace PassLock.Queries
                Console.WriteLine("Accounts:");
                foreach (var acct in accounts)
                {
-                  Console.WriteLine($"\t{acct.Id}. {acct.Email}");
+                  if (!string.IsNullOrEmpty(acct.Email))
+                  {
+                     Console.WriteLine($"\t{acct.Id}. {acct.Email}");
+                  }
+                  else if (!string.IsNullOrEmpty(acct.UserName))
+                  {
+                     Console.WriteLine($"\t{acct.Id}. {acct.UserName}");
+                  }
                }
             }
             else
