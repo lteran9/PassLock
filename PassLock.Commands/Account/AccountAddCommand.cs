@@ -21,16 +21,19 @@ namespace PassLock.Commands
       {
          try
          {
-            var account =
-               new Account()
-               {
-                  Email = _email,
-                  UserName = _userName
-               };
-            // Insert to database
-            await _accountDatabase.InsertAsync(account);
+            if (!string.IsNullOrEmpty(_email) || !string.IsNullOrEmpty(_userName))
+            {
+               var account =
+                  new Account()
+                  {
+                     Email = _email,
+                     UserName = _userName
+                  };
+               // Insert to database
+               await _accountDatabase.InsertAsync(account);
 
-            return true;
+               return true;
+            }
          }
          catch (Exception ex)
          {
