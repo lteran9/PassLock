@@ -12,58 +12,82 @@ namespace PassLock.UnitTests.Commands
    {
       [Theory]
       [AutoMoq]
-      public async Task PasswordAdd_Test01(
+      public async Task GivenValidPassword_WhenAdded_ResponseIsTrue(
          [Frozen] Mock<IDatabaseModel<Password>> repo)
       {
+         // Arrange
+         var passwordAddCmd = new PasswordAddCommand(repo.Object, new Password() { Key = "abcd1234", Value = "A Random Password_" });
+         // Act
+         var response = await passwordAddCmd.Execute();
+         // Assert
+         Assert.True(response);
+      }
+
+      [Theory]
+      [AutoMoq]
+      public async Task GivenInvalidPassword_WhenAdded_ResponseIsFalse(
+         [Frozen] Mock<IDatabaseModel<Password>> repo)
+      {
+         // Arrange
          var passwordAddCmd = new PasswordAddCommand(repo.Object, new Password());
-
-         Assert.True(await passwordAddCmd.Execute());
+         // Act
+         var response = await passwordAddCmd.Execute();
+         // Assert
+         Assert.False(response);
       }
 
       [Theory]
       [AutoMoq]
-      public async Task PasswordGet_Test01(
+      public async Task GivenPassword_WhenRetrieved_ResponseIsNotNull(
          [Frozen] Mock<IDatabaseModel<Password>> repo)
       {
-         repo.Setup(x => x.GetByIdAsync(It.IsAny<Password>())).Returns(Task.FromResult(new Password()));
+         // Arrange
+         repo.Setup(x => x.GetByIdAsync(It.IsAny<Password>())).ReturnsAsync(new Password());
          var passwordGetCmd = new PasswordGetCommand(repo.Object, 1);
-         // Validate we do not get a null value for password with Id
-         Assert.NotNull(await passwordGetCmd.Execute());
-      }
-
-      [Theory]
-      [AutoMoq]
-      public async Task PasswordGet_Test02(
-         [Frozen] Mock<IDatabaseModel<Password>> repo)
-      {
-         var passwordGetCmd = new PasswordGetCommand(repo.Object, 1);
+         // Act
          var response = await passwordGetCmd.Execute();
-         // Returns an empty object
+         // Assert
          Assert.NotNull(response);
-         Assert.Equal(0, response.Id);
       }
 
       [Theory]
       [AutoMoq]
-      public async Task AccountPasswordForDomainAdd_Test01(
+      public async Task GivenPassword_WhenRetrievedWithBadId_ResponseIsNull(
+         [Frozen] Mock<IDatabaseModel<Password>> repo)
+      {
+         // Arrange
+         var passwordGetCmd = new PasswordGetCommand(repo.Object, 0);
+         // Act
+         var response = await passwordGetCmd.Execute();
+         // Assert
+         Assert.Null(response);
+      }
+
+      [Theory]
+      [AutoMoq]
+      public async Task GivenAccountPasswordForDomain_WhenAdded_ResponseIsTrue(
          [Frozen] Mock<IDatabaseModel<AccountPasswordForDomain>> repo)
       {
-         var accountPasswordForDomainAddCmd = new AccountPasswordForDomainAddCommand(repo.Object, new AccountPasswordForDomain());
-
-         Assert.True(await accountPasswordForDomainAddCmd.Execute());
+         // Arrange
+         var accountPasswordForDomainAddCmd = new AccountPasswordForDomainAddCommand(repo.Object, new AccountPasswordForDomain() { AccountId = 1, DomainId = 1 });
+         // Act
+         var response = await accountPasswordForDomainAddCmd.Execute();
+         // Assert
+         Assert.True(response);
       }
 
       [Theory]
       [AutoMoq]
-      public async Task AccountPasswordForDomainGet_Test01(
+      public async Task GivenAccountPasswordForDomain_WhenRetrieved_ResponseIsNotNull(
          [Frozen] Mock<IDatabaseModel<AccountPasswordForDomain>> repo)
       {
          // Arrange
          repo.Setup(x => x.GetByIdAsync(It.IsAny<AccountPasswordForDomain>())).ReturnsAsync(new AccountPasswordForDomain());
-         // Act
          var accountPasswordForDomainGetCmd = new AccountPasswordForDomainGetCommand(repo.Object, 1, 1);
+         // Act
+         var response = await accountPasswordForDomainGetCmd.Execute();
          // Assert
-         Assert.NotNull(await accountPasswordForDomainGetCmd.Execute());
+         Assert.NotNull(response);
       }
    }
 }

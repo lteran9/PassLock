@@ -19,9 +19,12 @@ namespace PassLock.Commands
       {
          try
          {
-            await _accountPasswordForDomainDatabase.InsertAsync(_model);
+            if (_model.AccountId > 0 && _model.DomainId > 0)
+            {
+               await _accountPasswordForDomainDatabase.InsertAsync(_model);
 
-            return true;
+               return true;
+            }
          }
          catch (Exception ex)
          {

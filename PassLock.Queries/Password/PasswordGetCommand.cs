@@ -19,12 +19,16 @@ namespace PassLock.Queries
       {
          try
          {
-            return await _dbPassword.GetByIdAsync(new Password() { Id = _id });
+            if (_id > 0)
+            {
+               return await _dbPassword.GetByIdAsync(new Password() { Id = _id });
+            }
          }
          catch (Exception ex)
          {
             Console.WriteLine(ex.Message);
          }
+
          return null;
       }
    }

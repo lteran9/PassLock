@@ -21,9 +21,12 @@ namespace PassLock.Commands
       {
          try
          {
-            await _passwordDatabase.InsertAsync(_encryptedPassword);
+            if (!string.IsNullOrEmpty(_encryptedPassword.Key) && !string.IsNullOrEmpty(_encryptedPassword.Value))
+            {
+               await _passwordDatabase.InsertAsync(_encryptedPassword);
 
-            return true;
+               return true;
+            }
          }
          catch (Exception ex)
          {
