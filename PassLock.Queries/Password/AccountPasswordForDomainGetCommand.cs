@@ -4,6 +4,9 @@ using PassLock.EntityFramework;
 
 namespace PassLock.Queries
 {
+   /// <summary>
+   /// Represents a query that retrieves an account-password association for a specified domain.
+   /// </summary>
    public class AccountPasswordForDomainGetCommand : IQuery<Task<AccountPasswordForDomain?>>
    {
       private readonly int _accountId;

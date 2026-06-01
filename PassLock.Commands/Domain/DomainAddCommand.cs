@@ -4,6 +4,9 @@ using PassLock.EntityFramework;
 
 namespace PassLock.Commands
 {
+   /// <summary>
+   /// Represents a command that adds a new domain to the domain database.
+   /// </summary>
    public class DomainAddCommand : ICommand<Task<bool>>
    {
       private readonly string? _domain;

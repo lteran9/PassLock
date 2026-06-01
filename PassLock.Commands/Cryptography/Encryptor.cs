@@ -3,6 +3,9 @@ using System.Security.Cryptography;
 
 namespace PassLock.Commands
 {
+   /// <summary>
+   /// Provides AES encryption and decryption helpers used by password command handlers.
+   /// </summary>
    public static class Encryptor
    {
       /// <summary>

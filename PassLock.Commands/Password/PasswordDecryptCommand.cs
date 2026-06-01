@@ -3,6 +3,9 @@ using PassLock.Core;
 
 namespace PassLock.Commands
 {
+   /// <summary>
+   /// Represents a command that decrypts a stored password record.
+   /// </summary>
    public class PasswordDecryptCommand : ICommand<string>
    {
       private readonly Password? _password;

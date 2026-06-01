@@ -4,6 +4,9 @@ using PassLock.EntityFramework;
 
 namespace PassLock.Queries
 {
+   /// <summary>
+   /// Represents a query that retrieves a password record by its database identifier.
+   /// </summary>
    public class PasswordGetCommand : IQuery<Task<Password?>>
    {
       private readonly int _id;

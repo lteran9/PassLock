@@ -4,6 +4,9 @@ using PassLock.EntityFramework;
 
 namespace PassLock.Queries
 {
+   /// <summary>
+   /// Represents a query that lists all accounts from the account database.
+   /// </summary>
    public class AccountListCommand : IQuery<Task<bool>>
    {
       private readonly IDatabaseModel<Account> _accountDatabase;

@@ -2,6 +2,9 @@ using System.Text;
 
 namespace PassLock.Commands
 {
+   /// <summary>
+   /// Represents a command that prompts the user for input and returns the entered string.
+   /// </summary>
    public class ReadInputCommand : ICommand<string>
    {
       private readonly string _prompt;

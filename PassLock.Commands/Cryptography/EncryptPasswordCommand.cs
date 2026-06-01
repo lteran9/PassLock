@@ -3,6 +3,9 @@ using PassLock.Core;
 
 namespace PassLock.Commands
 {
+   /// <summary>
+   /// Represents a command that encrypts a plain text password and returns a password model.
+   /// </summary>
    public class EncryptPasswordCommand : ICommand<Password?>
    {
       private readonly string _password;

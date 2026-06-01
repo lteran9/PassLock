@@ -5,6 +5,9 @@ using PassLock.EntityFramework;
 
 namespace PassLock.Commands
 {
+   /// <summary>
+   /// Represents a command that adds an encrypted password record to the password database.
+   /// </summary>
    public class PasswordAddCommand : ICommand<Task<bool>>
    {
       private readonly IDatabaseModel<Password> _passwordDatabase;

@@ -4,6 +4,9 @@ using PassLock.EntityFramework;
 
 namespace PassLock.Commands
 {
+   /// <summary>
+   /// Represents a command that adds a new account to the account database.
+   /// </summary>
    public class AccountAddCommand : ICommand<Task<bool>>
    {
       private readonly IDatabaseModel<Account> _accountDatabase;

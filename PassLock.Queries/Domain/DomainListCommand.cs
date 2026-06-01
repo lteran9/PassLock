@@ -4,6 +4,9 @@ using PassLock.EntityFramework;
 
 namespace PassLock.Queries
 {
+   /// <summary>
+   /// Represents a query that lists all domains from the domain database.
+   /// </summary>
    public class DomainListCommand : IQuery<Task<bool>>
    {
       private readonly IDatabaseModel<Domain> _domainDatabase;

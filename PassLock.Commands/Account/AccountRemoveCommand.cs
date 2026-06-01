@@ -4,6 +4,9 @@ using PassLock.EntityFramework;
 
 namespace PassLock.Commands
 {
+   /// <summary>
+   /// Represents a command that removes an existing account from the account database.
+   /// </summary>
    public class AccountRemoveCommand : ICommand<Task<bool>>
    {
       private readonly int _id;

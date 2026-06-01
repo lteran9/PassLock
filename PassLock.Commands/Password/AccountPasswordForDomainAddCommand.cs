@@ -4,6 +4,9 @@ using PassLock.EntityFramework;
 
 namespace PassLock.Commands
 {
+   /// <summary>
+   /// Represents a command that associates an account password with a domain and stores it.
+   /// </summary>
    public class AccountPasswordForDomainAddCommand : ICommand<Task<bool>>
    {
       private readonly IDatabaseModel<AccountPasswordForDomain> _accountPasswordForDomainDatabase;

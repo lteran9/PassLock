@@ -4,6 +4,9 @@ using PassLock.EntityFramework;
 
 namespace PassLock.Commands
 {
+   /// <summary>
+   /// Represents a command that removes an existing domain from the domain database.
+   /// </summary>
    public class DomainRemoveCommand : ICommand<Task<bool>>
    {
       private readonly int _id;
