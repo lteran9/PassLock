@@ -203,7 +203,7 @@ namespace PassLock
                   }
                   break;
                default:
-                  LogUtility.Error("Unable to identify operation.");
+                  InputReaderCommands.Help();
                   break;
             }
          }
